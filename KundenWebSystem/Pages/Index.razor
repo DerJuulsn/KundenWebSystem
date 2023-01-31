@@ -1,9 +1,22 @@
 ﻿@page "/"
+@using KundenWebSystem.Database.Model
+@using Microsoft.EntityFrameworkCore
+@inject KWSContext Context
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+Aktuell gibt es @kundenCount Kunden in der Datenbank
 
 <SurveyPrompt Title="How is Blazor working for you?"/>
+
+@code
+{
+    private int kundenCount;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        kundenCount = await Context.tbl_Kunden.CountAsync();
+    }
+}
