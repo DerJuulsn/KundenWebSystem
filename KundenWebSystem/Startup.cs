@@ -1,4 +1,5 @@
 using KundenWebSystem.Data;
+using KundenWebSystem.Data.Example;
 using KundenWebSystem.Database.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
