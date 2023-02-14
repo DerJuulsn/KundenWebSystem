@@ -1,7 +1,81 @@
 ﻿@page "/stornieren"
+@using KundenWebSystem.Database.Model
+@using Microsoft.EntityFrameworkCore
+@inject KWSContext Context
 
-<h3>Stornieren</h3>
+<div class="row">
+    <h1>Details zur Buchung</h1>
+
+    <hr />
+
+    <h3>Eventdaten</h3>
+    <!--TODO Eventdaten-->
+
+    <div class="container-fluid">
+        <table class="arrowes-table table-striped">
+            <tbody>
+                <tr>
+                    <td><b>Name des Events</b></td>
+                    <td><b>Beschreibung des Events</b></td>
+                </tr>
+                <tr>
+                    <td>@eName</td>
+                    <td>@eBeschreibung</td>
+                </tr>
+                <tr>
+                    <td><b>Veranstalter</b></td>
+                    <td><b>Kategorie</b></td>
+                </tr>
+                <tr>
+                    <td>@eVeranstalter</td>
+                    <td>@eKategorie</td>
+                </tr>
+                <tr>
+                    <td><b>Start des Events</b></td>
+                    <td><b>Ende des Events</b></td>
+                </tr>
+                <tr>
+                    <td>@eStartzeit</td>
+                    <td>@eEndezeit</td>
+                </tr>
+                <tr>
+                    <td><b>Startort des Events</b></td>
+                    <td><b>Zielort des Events</b></td>
+                </tr>
+                <tr>
+                    <td>@eStartort</td>
+                    <td>@eZielort</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr />
+
+    <h3>Buchungsdaten</h3>
+    <!--TODO Buchungsdaten-->
+
+    <hr />
+    <!--TODO Buttons-->
+
+</div>
 
 @code {
+    // Felder
+    private string eName = "test";
+
+    private string eBeschreibung = "test";
+
+    private string eVeranstalter = "test";
+
+    private string eKategorie = "test";
+
+    private string eStartzeit = "test";
+
+    private string eEndezeit = "test";
+
+    private string eStartort = "test";
+
+    private string eZielort = "test";
 
 }
