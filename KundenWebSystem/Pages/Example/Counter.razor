@@ -1,10 +1,47 @@
 ﻿@page "/counter"
+<h1>Startseite</h1>
+<div>
+    <div id="carouselExampleControls" class="carousel slide w-50 h-50" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img class="d-block" src="mountain-biking-g12facdcf0_1920.jpg" alt="MTB_HILL" />
+        </div>
+        <div class="carousel-item">
+          <img class="d-block" src="parachute-ge40ccf0a2_1920.jpg" alt="PARACHUTE" />
+        </div>
+        <div class="carousel-item">
+          <img class="d-block" src="dive-g6967575e9_1920.jpg" alt="DIVE" />
+        </div>
+        <div class="carousel-item">
+          <img class="d-block" src="snowboarding-g38a804abf_1920.jpg" alt="SNOWBOARDING" />
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+</div>
 
-<h1>Counter</h1>
+
+
+
+
+
 
 <p role="status">Current count: @currentCount</p>
 
+
+
+
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+
+
 
 @code {
     private int currentCount = 0;
