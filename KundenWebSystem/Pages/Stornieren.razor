@@ -3,65 +3,125 @@
 @using Microsoft.EntityFrameworkCore
 @inject KWSContext Context
 
-<div class="row">
+<div class="row container-fluid">
     <h1>Details zur Buchung</h1>
 
     <hr />
 
     <h3>Eventdaten</h3>
-    <!--TODO Eventdaten-->
 
-    <div class="container-fluid">
-        <table class="arrowes-table table-striped">
-            <tbody>
-                <tr>
-                    <td><b>Name des Events</b></td>
-                    <td><b>Beschreibung des Events</b></td>
-                </tr>
-                <tr>
-                    <td>@eName</td>
-                    <td>@eBeschreibung</td>
-                </tr>
-                <tr>
-                    <td><b>Veranstalter</b></td>
-                    <td><b>Kategorie</b></td>
-                </tr>
-                <tr>
-                    <td>@eVeranstalter</td>
-                    <td>@eKategorie</td>
-                </tr>
-                <tr>
-                    <td><b>Start des Events</b></td>
-                    <td><b>Ende des Events</b></td>
-                </tr>
-                <tr>
-                    <td>@eStartzeit</td>
-                    <td>@eEndezeit</td>
-                </tr>
-                <tr>
-                    <td><b>Startort des Events</b></td>
-                    <td><b>Zielort des Events</b></td>
-                </tr>
-                <tr>
-                    <td>@eStartort</td>
-                    <td>@eZielort</td>
-                </tr>
-            </tbody>
-        </table>
+    <div>
+        <div class="row">
+            <div class="col">
+                <b>Name des Events</b>
+            </div>
+            <div class="col">
+                <b>Beschreibung des Events</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @eName
+            </div>
+            <div class="col">
+                @eBeschreibung
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <b>Veranstalter</b>
+            </div>
+            <div class="col">
+                <b>Kategorie</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @eVeranstalter
+            </div>
+            <div class="col">
+                @eKategorie
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <b>Start des Events</b>
+            </div>
+            <div class="col">
+                <b>Ende des Events</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @eStartzeit
+            </div>
+            <div class="col">
+                @eEndezeit
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <b>Startort des Events</b>
+            </div>
+            <div class="col">
+                <b>Zielort des Events</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @eStartort
+            </div>
+            <div class="col">
+                @eZielort
+            </div>
+        </div>
     </div>
 
     <hr />
 
     <h3>Buchungsdaten</h3>
-    <!--TODO Buchungsdaten-->
+
+    <div>
+        <div class="row">
+            <div class="col">
+                <b>Preis pro Teilnehmer</b>
+            </div>
+            <div class="col">
+                <b>Gebuchte Plätze</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @bPreis
+            </div>
+            <div class="col">
+                @bPlaetze
+            </div>
+        </div>
+    </div>
 
     <hr />
-    <!--TODO Buttons-->
+
+    <!-- TODO -->
+    <div>
+        <div class="row">
+            <div class="col"><button type="button" class="btn btn-link" onclick="back()">Zurück zur Übersicht</button></div>
+            <div class="col"><button type="button" class="btn btn-danger" onclick="storniereBuchung()">Buchung stornieren</button></div>
+        </div>
+    </div>       
 
 </div>
 
 @code {
-    // Felder
+    // Felder Eventdaten
     private string eName = "test";
 
     private string eBeschreibung = "test";
@@ -78,4 +138,20 @@
 
     private string eZielort = "test";
 
+    // Felder Buchungsdaten
+    private string bPreis = "test";
+
+    private string bPlaetze = "test";
+
+    // Todo BuchungsID übergeben bekommen und anhand der ein Objekt erstellen von dem ich die Daten holen kann.
+
+    private static void storniereBuchung()
+    {
+
+    }
+
+    private static void back()
+    {
+
+    }
 }
