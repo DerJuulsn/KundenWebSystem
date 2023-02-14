@@ -1,0 +1,40 @@
+﻿@page "/bookings"
+@using Data;
+@using KundenWebSystem.Database.Model;
+@inject BookingService bookingService;
+
+<h3>Meine aktiven Buchungen</h3>
+<div class="container-fluid">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Eventbezeichnungen</th>
+                <th scope="col">Eventbeginn</th>
+                <th scope="col">Startort</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(tbl_Buchungen buchung in this.userBookingList)
+            {
+                <tr>
+                    <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
+                    <td>@buchung.ed_EvDaten.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@buchung.ed_EvDaten.ed_StartOrt</td>
+                    <td><a href="/buchung/">Details</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@code {
+
+    private static int USER_ID = 0;
+
+    private List<tbl_Buchungen> userBookingList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userBookingList = await bookingService.GetBuchungenForUserAsync(USER_ID);
+    }
+
+}
