@@ -14,12 +14,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(tbl_Buchungen buchung in this.userBookingList)
+            @foreach(BookingService.BookingDataSet buchung in this.userBookingList)
             {
                 <tr>
-                    <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
-                    <td>@buchung.ed_EvDaten.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@buchung.ed_EvDaten.ed_StartOrt</td>
+                    <td>@buchung.EventsData.et_Bezeichnung</td>
+                    <td>@buchung.EventDatenData.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@buchung.EventDatenData.ed_StartOrt</td>
                     <td><a href="/buchung/">Details</a></td>
                 </tr>
             }
@@ -28,13 +28,15 @@
 </div>
 @code {
 
-    private static int USER_ID = 0;
+    private static int USER_ID = 1;
 
-    private List<tbl_Buchungen> userBookingList;
+    private List<BookingService.BookingDataSet> userBookingList = new List<BookingService.BookingDataSet>();
 
     protected override async Task OnInitializedAsync()
     {
         userBookingList = await bookingService.GetBuchungenForUserAsync(USER_ID);
     }
+
+
 
 }

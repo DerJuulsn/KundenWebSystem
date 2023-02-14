@@ -26,8 +26,8 @@ namespace KundenWebSystem
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<BookingService>();
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
+            services.AddScoped<BookingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
