@@ -1,0 +1,27 @@
+﻿@page "/booking{}"
+@using Data;
+@using KundenWebSystem.Database.Model;
+@inject BookingService bookingService;
+<h1>Eventbuchung</h1>
+<h3>Eventdaten</h3>
+<div class="container-fluid">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Name des Events</th>
+                <th scope="col">Veranstalter</th>
+                <th scope="col">Start des Events</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@code {
+    private tbl_Events _CurrentEvent;
+
+    public tbl_Events CurrentEvent
+    {
+        get { return _CurrentEvent; }
+        set { _CurrentEvent = value; }
+    }
+}
