@@ -1,0 +1,84 @@
+﻿@page "/cancel"
+@using KundenWebSystem.Database.Model
+@using Microsoft.EntityFrameworkCore
+@inject KWSContext Context
+
+<div class="row container-fluid">
+    <h1>Details zur Buchung</h1>
+
+    <hr />
+
+    
+
+    <hr />
+
+    <h3>Buchungsdaten</h3>
+
+    <div>
+        <div class="row">
+            <div class="col">
+                <b>Preis pro Teilnehmer</b>
+            </div>
+            <div class="col">
+                <b>Gebuchte Plätze</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                @bPreis
+            </div>
+            <div class="col">
+                @bPlaetze
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- TODO -->
+    <div>
+        <div class="row">
+            <div class="col"><button type="button" class="btn btn-link" onclick="back()">Zurück zur Übersicht</button></div>
+            <div class="col"><button type="button" class="btn btn-danger" onclick="storniereBuchung()">Buchung stornieren</button></div>
+        </div>
+    </div>       
+
+</div>
+
+@code {
+    // Felder Eventdaten
+    private string eName = "test";
+
+    private string eBeschreibung = "test";
+
+    private string eVeranstalter = "test";
+
+    private string eKategorie = "test";
+
+    private string eStartzeit = "test";
+
+    private string eEndezeit = "test";
+
+    private string eStartort = "test";
+
+    private string eZielort = "test";
+
+    // Felder Buchungsdaten
+    private string bPreis = "test";
+
+    private string bPlaetze = "test";
+
+    // Todo BuchungsID übergeben bekommen und anhand der ein Objekt erstellen von dem ich die Daten holen kann.
+
+
+    private static void StorniereBuchung()
+    {
+
+    }
+
+    private static void Back()
+    {
+
+    }
+}
