@@ -1,12 +1,14 @@
 ﻿@page "/bookings/cancel/{bookingId:int?}"
 @using KundenWebSystem.Database.Model
 @using Microsoft.EntityFrameworkCore
+@using KundenWebSystem.Data
 @using Components
 @inject KWSContext Context
+@inject BookingService bookingService
 
 <div class="row container-fluid">
     <h1>Details zur Buchung</h1>
-    <KundenWebSystem.Pages.Bookings.Components.Popup @ref="popup" Title="Möchten Sie stornieren?" Content="Es wäre wundervoll wenn Sie diese Aktion unterlassen würden" InteractionResult="@OnPopupInteraction"/>
+    <KundenWebSystem.Pages.Bookings.Components.Popup @ref="popup" Title="Möchten Sie stornieren?" Content="Es wäre wundervoll wenn Sie diese Aktion unterlassen würden" InteractionResult="@OnPopupInteraction" />
     <hr />
     <KundenWebSystem.Pages.Bookings.Components.EventData BookingId="@BookingId" />
     <hr />
@@ -23,14 +25,17 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
-                @*                @bPreis*@
+        @if (CurrentEventData != null)
+        {
+            <div class="row">
+                <div class="col">
+                    @CurrentEventData.ed_Preis
+                </div>
+                <div class="col">
+                    @CurrentEventData.ed_MaxTeilnehmer
+                </div>
             </div>
-            <div class="col">
-                @*@bPlaetze*@
-            </div>
-        </div>
+        }
     </div>
 
     <hr />
@@ -44,50 +49,36 @@
 </div>
 
 
-
-
 @code {
+    private tbl_EventDaten _CurrentEventData;
+
+    public tbl_EventDaten CurrentEventData
+    {
+        get { return _CurrentEventData; }
+        set { _CurrentEventData = value; }
+    }
+
+
     private Popup popup;
 
     public void DoCancelBooking()
     {
         popup.Open();
+    }
 
-
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
     }
 
     private void OnPopupInteraction(bool value)
     {
-        
+        if (value)
+        {
+
+        }
     }
 
-    [Parameter]
-    public bool IsVisible { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> IsVisibleChanged { get; set; }
-
-    [Parameter]
-    public string? HeaderText { get; set; }
-
-    [Parameter]
-    public string? BodyText { get; set; }
-
-    public void Show(string bodyText, string headerText = "")
-    {
-        HeaderText = headerText;
-        BodyText = bodyText;
-        IsVisible = true;
-        StateHasChanged();
-    }
-
-    private void Close()
-    {
-        HeaderText = string.Empty;
-        BodyText = string.Empty;
-        IsVisible = false;
-        StateHasChanged();
-    }
 
     [Parameter]
     public int BookingId { get; set; }
