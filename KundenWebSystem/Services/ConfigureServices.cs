@@ -6,6 +6,7 @@ namespace KundenWebSystem.Services
     {
         public static void ConfigureKWSServices(this IServiceCollection services)
         {
+            services.AddSingleton<SessionStorageService>();
             // Configure KWS Services here
         }
     }
