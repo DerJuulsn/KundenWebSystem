@@ -8,14 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Pages\Bookings\Components\Popup.razor.css" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Pages\Bookings\Components\Popup.razor.css" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\KundenWebSystem.Database\KundenWebSystem.Database.csproj" />
     </ItemGroup>
 
