@@ -109,6 +109,8 @@
     public int BookingId { get; set; }
     #endregion
 
+
+
     protected override async Task OnInitializedAsync()
     {
         CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
