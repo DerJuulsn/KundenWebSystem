@@ -3,12 +3,20 @@
 @using Microsoft.EntityFrameworkCore
 @using Components
 @inject KWSContext Context
+@inject Data.BookingService bookingService;
 
 <div class="row container-fluid">
     <h1>Details zur Buchung</h1>
-
+    <KundenWebSystem.Pages.Bookings.Components.Popup @ref="popup" Title="Möchten Sie stornieren?" Content="Es wäre wundervoll wenn Sie diese Aktion unterlassen würden" InteractionResult="@OnPopupInteraction"/>
     <hr />
-    <KundenWebSystem.Pages.Bookings.Components.EventData BookingId="@BookingId"/>
+    @if (eventDatenId == -1)
+    {
+        <p>Yikes @eventDatenId</p>
+    }
+    else
+    {
+        <KundenWebSystem.Pages.Bookings.Components.EventData EventDataId="@eventDatenId" />
+    }
     <hr />
 
     <h3>Buchungsdaten</h3>
@@ -25,7 +33,7 @@
 
         <div class="row">
             <div class="col">
-@*                @bPreis*@
+                @*                @bPreis*@
             </div>
             <div class="col">
                 @*@bPlaetze*@
@@ -34,17 +42,70 @@
     </div>
 
     <hr />
-
-    <div>
-        <div class="row">
-            <div class="col"><button type="button" class="btn btn-link">Zurück zur Übersicht</button></div>
-            <div class="col"><button type="button" class="btn btn-danger">Buchung stornieren</button></div>
-        </div>
-    </div>       
-
 </div>
 
+<div class="container mt-3">
+    <div class="col">
+        <a href="/bookings">Zurück zur Übersicht</a>
+        <button type="button" class="btn btn-danger" @onclick="DoCancelBooking">Buchung stornieren</button>
+    </div>
+</div>
+
+
+
+
 @code {
+    private Popup popup;
+
+    public void DoCancelBooking()
+    {
+        popup.Open();
+
+
+    }
+
+    private void OnPopupInteraction(bool value)
+    {
+        
+    }
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    [Parameter]
+    public string? HeaderText { get; set; }
+
+    [Parameter]
+    public string? BodyText { get; set; }
+
+    public void Show(string bodyText, string headerText = "")
+    {
+        HeaderText = headerText;
+        BodyText = bodyText;
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    private void Close()
+    {
+        HeaderText = string.Empty;
+        BodyText = string.Empty;
+        IsVisible = false;
+        StateHasChanged();
+    }
+
     [Parameter]
     public int BookingId { get; set; }
+
+    private int eventDatenId = -1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(BookingId);
+        eventDatenId = await bookingService.GetEventDatenIdFromBuchungId(BookingId);
+    }
+
 }

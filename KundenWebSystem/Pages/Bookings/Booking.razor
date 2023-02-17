@@ -1,27 +1,75 @@
-﻿@page "/booking"
+﻿@page "/bookings/new/{eventDataId:int?}"
 @using Data;
 @using KundenWebSystem.Database.Model;
 @inject BookingService bookingService;
 <h1>Eventbuchung</h1>
-<h3>Eventdaten</h3>
-<div class="container-fluid">
-    <table>
-        <thead>
-            <tr>
-                <th scope="col">Name des Events</th>
-                <th scope="col">Veranstalter</th>
-                <th scope="col">Start des Events</th>
-            </tr>
-        </thead>
-    </table>
-</div>
+<hr />
+@if (this.eventDaten == null)
+{
+    <div class="container">
+        <p>Loading...</p>
+    </div>
+}
+else
+{
+    <KundenWebSystem.Pages.Bookings.Components.EventData EventDataId="@EventDataId" />
+    <div class="container-fluid" id="your-booking-container">
+        <h3>Ihre Buchung</h3>
+        <hr />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col"><p style="font-weight: bold" class="no-margin">Preis pro Teilnehmer</p></div>
+                <div class="col"><p style="font-weight: bold" class="no-margin">Aktuelle Teilnehmer</p></div>
+                <div class="col"><p style="font-weight: bold" class="no-margin">Freie Teilnehmer</p></div>
+            </div>
+            <div class="row">
+                <div class="col"><p>@this.eventDaten.ed_Preis</p></div>
+                <div class="col"><p>@this.eventDaten.ed_AktTeilnehmer</p></div>
+                <div class="col"><p>@(this.eventDaten.ed_MaxTeilnehmer - this.eventDaten.ed_AktTeilnehmer)</p></div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- ComboBox Teilnehmerplätze -->
+                <div class="col no-margin dropdown-plaetze">
+                    <label for="anzahl-plaetze-label">Anzahl Plätze</label>
+                    <select name="anzahl-plaetze-label" id="select-anzahl-plaetze">
+                        @for (int i = 1; i < GetFreeSpots() + 1; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
 
+                <!-- Platzhalter -->
+                <div class="col"></div>
+
+                <!-- Button: "Buchen" -->
+                <div class="col">
+                    <button class="btn btn-success" @onclick="() => ClickBtnBuchen()">Event buchen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 @code {
-    private tbl_Events _CurrentEvent;
+    // Custom-URL-Paramter: Event Daten ID
+    [Parameter]
+    public int EventDataId { get; set; }
 
-    public tbl_Events CurrentEvent
+    private tbl_EventDaten eventDaten;
+
+    protected override async Task OnInitializedAsync()
     {
-        get { return _CurrentEvent; }
-        set { _CurrentEvent = value; }
+        this.eventDaten = await bookingService.GetEventDatenFromId(EventDataId);
+    }
+
+    private int GetFreeSpots()
+    {
+        return this.eventDaten.ed_MaxTeilnehmer - this.eventDaten.ed_AktTeilnehmer;
+    }
+
+    public void ClickBtnBuchen()
+    {
     }
 }

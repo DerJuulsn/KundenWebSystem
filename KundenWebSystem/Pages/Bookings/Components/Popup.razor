@@ -1,0 +1,68 @@
+﻿@{
+    var showClass = IsVisible ? "d-block" : "d-none";
+}
+<div class="modal @ModalClass @showClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>@Content</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Yessir</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Nah cringe</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> InteractionResult { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string? Content { get; set; }
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        IsVisible = false;
+        StateHasChanged();
+    }
+
+    private void Close()
+    {
+        Hide();
+        InteractionResult.InvokeAsync(true);
+    }
+
+    private void Success()
+    {
+        Hide();
+        InteractionResult.InvokeAsync(true);
+    }
+}
