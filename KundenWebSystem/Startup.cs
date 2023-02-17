@@ -1,13 +1,12 @@
+using KundenWebSystem.Data;
 using KundenWebSystem.Database.Model;
+using KundenWebSystem.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using KundenWebSystem.Data;
 
 namespace KundenWebSystem
 {
@@ -27,6 +26,8 @@ namespace KundenWebSystem
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
+            // !! do not configure services here !! use ConfigureKWSServices!
+            services.ConfigureKWSServices();
             services.AddScoped<BookingService>();
         }
 

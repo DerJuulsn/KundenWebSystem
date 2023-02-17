@@ -1,0 +1,22 @@
+﻿body {
+ margin: 0 auto;
+}
+
+#eventtabel {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+.buttonBuchen{
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    border:none;
+}
