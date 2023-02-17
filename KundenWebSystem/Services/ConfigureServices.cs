@@ -1,3 +1,4 @@
+using KundenWebSystem.Data.Eventseite;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KundenWebSystem.Services
@@ -6,8 +7,9 @@ namespace KundenWebSystem.Services
     {
         public static void ConfigureKWSServices(this IServiceCollection services)
         {
-            services.AddSingleton<SessionStorageService>();
+            services.AddScoped<SessionStorageService>();
             // Configure KWS Services here
+            services.AddScoped<EventService>();
         }
     }
 }
