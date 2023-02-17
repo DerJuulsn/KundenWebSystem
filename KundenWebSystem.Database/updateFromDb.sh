@@ -1,0 +1,1 @@
+ dotnet ef dbcontext scaffold "name=KWSContext" Microsoft.EntityFrameworkCore.SqlServer -o Model --no-pluralize --use-database-names -f -c KWSContext --data-annotations --no-onconfiguring
