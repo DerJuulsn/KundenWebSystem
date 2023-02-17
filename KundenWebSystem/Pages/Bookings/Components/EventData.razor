@@ -7,85 +7,86 @@
 
     @if (CurrentEventData != null)
     {
-    <div>
-        <div class="row">
-            <div class="col">
-                <b>Name des Events</b>
-            </div>
-            <div class="col">
-                <b>Beschreibung des Events</b>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                @CurrentEventData.et_Event.et_Bezeichnung
-            </div>
-            <div class="col">
-                @CurrentEventData.et_Event.et_Beschreibung
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <b>Veranstalter</b>
-            </div>
-            <div class="col">
-                <b>Kategorie</b>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                @CurrentEventData.et_Event.ev_EvVeranstalter
-            </div>
-            <div class="col">
-                @CurrentEventData.et_Event.ek_EvKategorie
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <b>Start des Events</b>
-            </div>
-            <div class="col">
-                <b>Ende des Events</b>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                @CurrentEventData.ed_Beginn.ToString("dd.MM.yyyy HH:mm");
-            </div>
-            <div class="col">
-                @CurrentEventData.ed_Ende.ToString("dd.MM.yyyy HH:mm");
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <b>Startort des Events</b>
-            </div>
-            <div class="col">
-                <b>Zielort des Events</b>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                @CurrentEventData.ed_StartOrt
-            </div>
-            <div class="col">
-                @CurrentEventData.ed_Zielort
-            </div>
-        </div>
-    </div>
-    } else
-            {
-                <div>
-                    <p>Loading...</p>
+        <div>
+            <div class="row">
+                <div class="col">
+                    <b>Name des Events</b>
                 </div>
-            }
+                <div class="col">
+                    <b>Beschreibung des Events</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    @CurrentEventData.et_Event.et_Bezeichnung
+                </div>
+                <div class="col">
+                    @CurrentEventData.et_Event.et_Beschreibung
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <b>Veranstalter</b>
+                </div>
+                <div class="col">
+                    <b>Kategorie</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    @CurrentEventData.et_Event.ev_EvVeranstalter.ev_Firma
+                </div>
+                <div class="col">
+                    @CurrentEventData.et_Event.ek_EvKategorie.ek_KatBezeichnung
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <b>Start des Events</b>
+                </div>
+                <div class="col">
+                    <b>Ende des Events</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    @CurrentEventData.ed_Beginn.ToString("dd.MM.yyyy HH:mm");
+                </div>
+                <div class="col">
+                    @CurrentEventData.ed_Ende.ToString("dd.MM.yyyy HH:mm");
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <b>Startort des Events</b>
+                </div>
+                <div class="col">
+                    <b>Zielort des Events</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    @CurrentEventData.ed_StartOrt
+                </div>
+                <div class="col">
+                    @CurrentEventData.ed_Zielort
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>Loading...</p>
+        </div>
+    }
 </div>
 
 @code {
