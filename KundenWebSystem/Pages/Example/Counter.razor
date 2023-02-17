@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@inject IJSRuntime JS
 <h1>Startseite</h1>
 <div>
     <div id="carouselExampleControls" class="carousel slide w-50 h-50" data-bs-ride="carousel">
@@ -20,13 +21,12 @@
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" @onclick="OnNext">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
 </div>
-
 
 
 
@@ -51,4 +51,8 @@
         currentCount++;
     }
 
+  private void OnNext()
+  {
+      JS.InvokeVoidAsync("next");
+  }
 }
