@@ -23,7 +23,7 @@
             @foreach (var test in tabledata)
             {
                 <tr>
-                    <td>@test.EventBezeichnung</td>
+                    <td><a href="/EventDetails/@test.EventID">@test.EventBezeichnung</a></td>
                     <td>@test.VeranstalterName</td>
                     <td>@test.EventDatenStartOrt</td>
                     <td>@test.EventDatenBeginn</td>
@@ -50,6 +50,6 @@
 
     public void BucheEvent(int id)
     {
-        mng.NavigateTo($"/booking?{id}");
+        mng.NavigateTo($"/booking/{id}");
     }
 }
