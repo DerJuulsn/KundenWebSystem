@@ -23,7 +23,12 @@ namespace KundenWebSystem.Data
 
         public async Task<tbl_EventDaten> GetEventDatenFromId(int eventDatenID)
         {
-            return await this.databaseContext.tbl_EventDaten.Where(eventDaten => eventDaten.ed_EvDatenID == eventDatenID).FirstAsync();
+            return await this.databaseContext.tbl_EventDaten
+                .Include(o => o.et_Event)
+                .Include(o => o.et_Event.ev_EvVeranstalter)
+                .Include(o => o.et_Event.ek_EvKategorie)
+                .Where(eventDaten => eventDaten.ed_EvDatenID == eventDatenID)
+                .FirstAsync();
         }
 
         public async Task<tbl_Events> GetEventFromId(int eventId)

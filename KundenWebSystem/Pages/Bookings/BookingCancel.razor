@@ -1,4 +1,4 @@
-﻿@page "/cancel"
+﻿@page "/bookings/cancel/{bookingId:int?}"
 @using KundenWebSystem.Database.Model
 @using Microsoft.EntityFrameworkCore
 @inject KWSContext Context
@@ -68,6 +68,9 @@
     private string bPreis = "test";
 
     private string bPlaetze = "test";
+
+    [Parameter]
+    public int BookingId { get; set; }
 
     // Todo BuchungsID übergeben bekommen und anhand der ein Objekt erstellen von dem ich die Daten holen kann.
 

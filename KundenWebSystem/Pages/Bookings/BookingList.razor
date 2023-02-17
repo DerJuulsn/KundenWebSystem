@@ -3,14 +3,16 @@
 @using KundenWebSystem.Database.Model;
 @inject BookingService bookingService;
 
-<h3>Meine aktiven Buchungen</h3>
-<div class="container-fluid">
-    <table>
-        <thead>
+<h3 style="font-weight: bold">Meine aktiven Buchungen</h3>
+<hr />
+<div class="container-fluid" id="booking-list">
+    <table class="table table-striped">
+        <thead class="thead-light">
             <tr>
                 <th scope="col">Eventbezeichnungen</th>
                 <th scope="col">Eventbeginn</th>
                 <th scope="col">Startort</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +22,7 @@
                     <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
                     <td>@buchung.ed_EvDaten.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
                     <td>@buchung.ed_EvDaten.ed_StartOrt</td>
-                    <td><a href="/stornieren">Details</a></td>
+                    <td><a href="/bookings/cancel/@buchung.bu_BuchungsID">Details</a></td>
                 </tr>
             }
         </tbody>
