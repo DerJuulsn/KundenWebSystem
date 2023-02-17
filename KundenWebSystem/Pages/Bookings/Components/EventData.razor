@@ -5,6 +5,8 @@
 <div class="container-fluid">
     <h3>Eventdaten</h3>
 
+    @if (CurrentEventData != null)
+    {
     <div>
         <div class="row">
             <div class="col">
@@ -78,6 +80,12 @@
             </div>
         </div>
     </div>
+    } else
+            {
+                <div>
+                    <p>Loading...</p>
+                </div>
+            }
 </div>
 
 @code {
@@ -93,12 +101,15 @@
         set { _CurrentEventData = value; }
     }
 
-
     #endregion
 
+    #region Attributes
+    [Parameter]
+    public int BookingId { get; set; }
+    #endregion
 
     protected override async Task OnInitializedAsync()
     {
-        CurrentEventData = await bookingService.GetEventDatenFromId(1);
+        CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
     }
 }
