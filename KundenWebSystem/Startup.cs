@@ -1,3 +1,6 @@
+using KundenWebSystem.Data;
+using KundenWebSystem.Data.Eventseite;
+using KundenWebSystem.Data.Example;
 using KundenWebSystem.Database.Model;
 using KundenWebSystem.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +30,7 @@ namespace KundenWebSystem
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
             // !! do not configure services here !! use ConfigureKWSServices!
             services.ConfigureKWSServices();
+            services.AddScoped<EventService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

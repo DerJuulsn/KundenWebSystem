@@ -1,0 +1,55 @@
+﻿@page "/Eventseite"
+@using KundenWebSystem.Data.Eventseite
+
+
+@inject EventService service
+@inject NavigationManager mng
+
+<h1>Alle Verfügbaren Event</h1>
+<br style="border:1px solid black" />
+
+<div class="container-fluid" style="overflow-x:auto; overflow-x:auto">
+    <table width="100%" id="eventtabel">
+        <tr style="border-bottom:2px solid black">
+            <th style="font-weight:bold">Eventbezeichnung</th>
+            <th style="font-weight:bold">Veranstalter</th>
+            <th style="font-weight:bold">Startort</th>
+            <th style="font-weight:bold">Beginn</th>
+            <th style="font-weight:bold">Preis pro Person</th>
+            <th></th>
+        </tr>
+        @if (tabledata != null)
+        {
+            @foreach (var test in tabledata)
+            {
+                <tr>
+                    <td><a href="/EventDetails/@test.EventID">@test.EventBezeichnung</a></td>
+                    <td>@test.VeranstalterName</td>
+                    <td>@test.EventDatenStartOrt</td>
+                    <td>@test.EventDatenBeginn</td>
+                    <td>@test.EventDatenPreis</td>
+                    <td><button class="buttonBuchen" @onclick="() => BucheEvent(test.EventID)">buchen</button></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p>Loading</p>
+        }
+    </table>
+</div>
+
+@code
+{
+    public List<EventsResult> tabledata;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tabledata = await service.GetAvailableEventsAsync();
+    }
+
+    public void BucheEvent(int id)
+    {
+        mng.NavigateTo($"/booking/{id}");
+    }
+}
