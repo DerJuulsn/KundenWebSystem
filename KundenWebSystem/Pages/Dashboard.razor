@@ -1,0 +1,72 @@
+﻿@page "/Dashboard"
+@using KundenWebSystem.Database.Model
+@using Microsoft.EntityFrameworkCore  
+@inject KWSContext Context
+
+
+Hallo @Kundenname @Kundenachname!<br />
+<br />
+<div class="row row-cols-2">
+    <div class="col">
+        <div class="card-body">
+            Event finden:
+            <h5 class="card-title">Neues Abenteuer finden!</h5>
+            <p class="card-text">Ihr nächstes Event wartet bereits<br />
+            auf Sie! Sehen Sie sich die aktuellen<br />
+            Veranstaltungen an und starten Sie<br />
+            ein neues Abenteuer.</p>
+            <br />
+            <a href="#" class="card-link">Zu den Events...</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card-body">
+            Ihr nächstes Event:
+            <h5 class="card-title">Datum: @DatumUhr</h5>
+            <h5 class="card-title">Uhr</h5>
+            <p class="card-text">@Bezeichnung</p>
+            <p class="card-text">@Beschreibung</p>
+            <br />
+            <a href="#" class="card-link">Details ansehen</a>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private string Kundenname;
+    private string Kundenachname;
+    private DateTime DatumUhr;
+    private string Bezeichnung;
+    private string Beschreibung;
+
+    public IList<tbl_EventDaten> EventDatenVM { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var kid = 1;
+        var kunde = await Context.tbl_Kunden.FindAsync(kid);
+        Kundenname = kunde.kd_Vorname;
+        Kundenachname = kunde.kd_Name;
+
+        async Task OnGetAsync()
+        {
+
+            var buchungen = await Context.tbl_Buchungen.FindAsync(kid);
+            var eventdaten = await Context.tbl_EventDaten.FindAsync(buchungen.ed_EvDatenID);
+            var events = await Context.tbl_Events.FindAsync(eventdaten.et_EventID);
+            var abenteuer = await Context.tbl_Events.FindAsync();
+
+            DatumUhr = eventdaten.ed_Beginn;
+            Bezeichnung = events.et_Bezeichnung;
+            Beschreibung = events.et_Beschreibung;
+
+
+
+        }
+
+    }
+
+}
