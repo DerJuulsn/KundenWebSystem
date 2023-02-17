@@ -106,13 +106,13 @@
 
     #region Attributes
     [Parameter]
-    public int BookingId { get; set; }
+    public int EventDataId { get; set; }
     #endregion
 
 
 
     protected override async Task OnInitializedAsync()
     {
-        CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
+        CurrentEventData = await bookingService.GetEventDatenFromId(EventDataId);
     }
 }

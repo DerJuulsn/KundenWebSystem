@@ -31,6 +31,23 @@ namespace KundenWebSystem.Data
                 .FirstAsync();
         }
 
+        public async Task<tbl_EventDaten> GetEventDatenFromBuchungId(int buchungId)
+        {
+            return await this.databaseContext.tbl_Buchungen
+                .Include(o => o.ed_EvDaten)
+                .Include(o => o.ed_EvDaten.et_Event)
+                .Include(o => o.ed_EvDaten.et_Event.ev_EvVeranstalter)
+                .Include(o => o.ed_EvDaten.et_Event.ek_EvKategorie)
+                .Where(buchung => buchung.bu_BuchungsID == buchungId)
+                .Select(buchung => buchung.ed_EvDaten)
+                .FirstAsync();
+        }
+
+        public async Task<int> GetEventDatenIdFromBuchungId(int buchungId)
+        {
+            return (await this.databaseContext.tbl_Buchungen.Where(buchung => buchung.bu_BuchungsID == buchungId).FirstAsync()).ed_EvDatenID;
+        }
+
         public async Task<tbl_Events> GetEventFromId(int eventId)
         {
             return await this.databaseContext.tbl_Events.Where(events => events.et_EventID == eventId).FirstAsync();
