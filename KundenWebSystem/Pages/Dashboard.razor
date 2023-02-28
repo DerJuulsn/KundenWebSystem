@@ -4,33 +4,36 @@
 @inject KWSContext Context
 
 
-Hallo @Kundenname @Kundenachname!<br />
-<br />
-<div class="row row-cols-2">
-    <div class="col">
-        <div class="card-body">
-            Event finden:
-            <h5 class="card-title">Neues Abenteuer finden!</h5>
-            <p class="card-text">Ihr nächstes Event wartet bereits<br />
-            auf Sie! Sehen Sie sich die aktuellen<br />
-            Veranstaltungen an und starten Sie<br />
-            ein neues Abenteuer.</p>
-            <br />
-            <a href="#" class="card-link">Zu den Events...</a>
+<div class="container-fluid">
+    <h3>Hallo @Kundenname @Kundenachname!</h3>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+            <span style="font-weight: bold;">Event finden:</span>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Neues Abenteuer starten!</h5>
+                    <p class="card-text">
+                        Ihr nächstes Event wartet bereits auf Sie! Sehen Sie sich die aktuellen Veranstaltungen an und starten Sie in ein neues Abenteuer.
+                    </p>
+                    <a href="#" class="card-link">Zu den Events...</a>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col">
-        <div class="card-body">
-            Ihr nächstes Event:
-            <h5 class="card-title">Datum: @DatumUhr</h5>
-            <h5 class="card-title">Uhr</h5>
-            <p class="card-text">@Bezeichnung</p>
-            <p class="card-text">@Beschreibung</p>
-            <br />
-            <a href="#" class="card-link">Details ansehen</a>
+        <div class="col-sm-6">
+            <span style="font-weight: bold;">Ihr nächstes Event:</span>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Datum: @DatumUhr</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@Bezeichnung</h6>
+                    <p class="card-text">@Beschreibung</p>
+                    <a href="#" class="card-link">Details ansehen</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -50,7 +53,6 @@ Hallo @Kundenname @Kundenachname!<br />
         var kunde = await Context.tbl_Kunden.FindAsync(kid);
         Kundenname = kunde.kd_Vorname;
         Kundenachname = kunde.kd_Name;
-
         async Task OnGetAsync()
         {
 
