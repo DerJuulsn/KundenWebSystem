@@ -1,6 +1,8 @@
 ﻿@page "/Dashboard"
 @using KundenWebSystem.Database.Model
 @using Microsoft.EntityFrameworkCore  
+@using System;
+@using System.Reflection; 
 @inject KWSContext Context
 
 
@@ -16,7 +18,7 @@
                     <p class="card-text">
                         Ihr nächstes Event wartet bereits auf Sie! Sehen Sie sich die aktuellen Veranstaltungen an und starten Sie in ein neues Abenteuer.
                     </p>
-                    <a href="#" class="card-link">Zu den Events...</a>
+                    <a href="EventSeite" class="card-link">Zu den Events...</a>
                 </div>
             </div>
         </div>
@@ -24,10 +26,11 @@
             <span style="font-weight: bold;">Ihr nächstes Event:</span>
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Datum: @DatumUhr</h5>
+                    <h5 class="card-title">Datum: @DatumUhr Uhr</h5>
                     <h6 class="card-subtitle mb-2 text-muted">@Bezeichnung</h6>
                     <p class="card-text">@Beschreibung</p>
-                    <a href="#" class="card-link">Details ansehen</a>
+                    <a href="Event/@EventID" class="card-link">Details ansehen</a>
+                    
                 </div>
             </div>
         </div>
@@ -43,6 +46,7 @@
     private DateTime DatumUhr;
     private string Bezeichnung;
     private string Beschreibung;
+    private int EventID;
 
     public IList<tbl_EventDaten> EventDatenVM { get; set; }
 
@@ -53,22 +57,22 @@
         var kunde = await Context.tbl_Kunden.FindAsync(kid);
         Kundenname = kunde.kd_Vorname;
         Kundenachname = kunde.kd_Name;
-        async Task OnGetAsync()
-        {
+        //async Task OnGetAsync()
+        //{
 
-            var buchungen = await Context.tbl_Buchungen.FindAsync(kid);
-            var eventdaten = await Context.tbl_EventDaten.FindAsync(buchungen.ed_EvDatenID);
-            var events = await Context.tbl_Events.FindAsync(eventdaten.et_EventID);
-            var abenteuer = await Context.tbl_Events.FindAsync();
+        var buchungen = await Context.tbl_Buchungen.FindAsync(kid);
+        var eventdaten = await Context.tbl_EventDaten.FindAsync(buchungen.ed_EvDatenID);
+        var events = await Context.tbl_Events.FindAsync(eventdaten.et_EventID);
+        //var abenteuer = await Context.tbl_Events.FindAsync();
 
-            DatumUhr = eventdaten.ed_Beginn;
-            Bezeichnung = events.et_Bezeichnung;
-            Beschreibung = events.et_Beschreibung;
+        DatumUhr = eventdaten.ed_Beginn;
+        Bezeichnung = events.et_Bezeichnung;
+        Beschreibung = events.et_Beschreibung;
+        EventID = events.et_EventID;
 
 
+        //}
 
         }
-
-    }
 
 }
