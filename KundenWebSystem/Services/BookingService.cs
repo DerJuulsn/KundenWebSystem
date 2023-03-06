@@ -23,33 +23,24 @@ namespace KundenWebSystem.Data
         public async Task<tbl_EventDaten> GetEventDatenFromId(int eventDatenID)
         {
             return await this.databaseContext.tbl_EventDaten
-                .Include(o => o.et_Event)
                 .Include(o => o.et_Event.ev_EvVeranstalter)
                 .Include(o => o.et_Event.ek_EvKategorie)
                 .Where(eventDaten => eventDaten.ed_EvDatenID == eventDatenID)
-                .FirstAsync();
-        }
-
-        public async Task<tbl_EventDaten> GetEventDatenFromBuchungId(int buchungId)
-        {
-            return await this.databaseContext.tbl_Buchungen
-                .Include(o => o.ed_EvDaten)
-                .Include(o => o.ed_EvDaten.et_Event)
-                .Include(o => o.ed_EvDaten.et_Event.ev_EvVeranstalter)
-                .Include(o => o.ed_EvDaten.et_Event.ek_EvKategorie)
-                .Where(buchung => buchung.bu_BuchungsID == buchungId)
-                .Select(buchung => buchung.ed_EvDaten)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<int> GetEventDatenIdFromBuchungId(int buchungId)
         {
-            return (await this.databaseContext.tbl_Buchungen.Where(buchung => buchung.bu_BuchungsID == buchungId).FirstAsync()).ed_EvDatenID;
+            tbl_Buchungen buchung = await this.databaseContext.tbl_Buchungen.Where(buchung => buchung.bu_BuchungsID == buchungId).FirstOrDefaultAsync();
+            return buchung == null ? -1 : buchung.ed_EvDatenID;
         }
+    }
 
-        public async Task<tbl_Events> GetEventFromId(int eventId)
+    public static class BookingExtensions
+    {
+        public static int GetFreeSpots(this tbl_EventDaten eventDaten)
         {
-            return await this.databaseContext.tbl_Events.Where(events => events.et_EventID == eventId).FirstAsync();
+            return eventDaten.ed_MaxTeilnehmer - eventDaten.ed_AktTeilnehmer;
         }
     }
 }
