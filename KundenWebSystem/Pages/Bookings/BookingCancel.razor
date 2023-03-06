@@ -10,7 +10,14 @@
     <h1>Details zur Buchung</h1>
     <KundenWebSystem.Pages.Bookings.Components.Popup @ref="popup" Title="Möchten Sie stornieren?" Content="Es wäre wundervoll wenn Sie diese Aktion unterlassen würden" InteractionResult="@OnPopupInteraction" />
     <hr />
-    <KundenWebSystem.Pages.Bookings.Components.EventData BookingId="@BookingId" />
+    @if (eventDatenId == -1)
+    {
+        <p>Yikes @eventDatenId</p>
+    }
+    else
+    {
+        <KundenWebSystem.Pages.Bookings.Components.EventData EventDataId="@eventDatenId" />
+    }
     <hr />
 
     <h3>Buchungsdaten</h3>
@@ -83,8 +90,6 @@
     [Parameter]
     public int BookingId { get; set; }
 
-    public void OnButtonClick()
-    {
+    private int eventDatenId = -1;
 
-    }
 }

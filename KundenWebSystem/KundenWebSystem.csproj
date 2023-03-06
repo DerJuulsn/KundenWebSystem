@@ -19,8 +19,4 @@
       <ProjectReference Include="..\KundenWebSystem.Database\KundenWebSystem.Database.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Pages\Bookings\Components\Popups\" />
-    </ItemGroup>
-
 </Project>
