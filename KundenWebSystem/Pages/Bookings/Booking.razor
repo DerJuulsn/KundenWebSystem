@@ -66,7 +66,7 @@ else
 
     private int GetFreeSpots()
     {
-        return this.eventDaten.ed_MaxTeilnehmer - this.eventDaten.ed_AktTeilnehmer;
+        return this.eventDaten.GetFreeSpots();
     }
 
     public void ClickBtnBuchen()
