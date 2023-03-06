@@ -29,6 +29,7 @@ namespace KundenWebSystem
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
+            services.AddSingleton<HashTranslator>(); //Login
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

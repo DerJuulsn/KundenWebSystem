@@ -1,0 +1,80 @@
+﻿@page "/Login"
+@using KundenWebSystem.Database.Model
+@inject KWSContext Context
+@inject HashTranslator Translator
+
+<h3>Anmeldebereich</h3>
+<h4>Für Bestandskunden</h4>
+<label for="InputEmail">Email</label>
+<input id="InputEmail" class="form-control-sm" type="email" @bind-value="email" />
+<br />
+<label style="color:darkred" hidden="@hiddenEmail">@emailError</label>
+<br />
+<label for="InputPassword">Passwort</label>
+<input id="InputPassword" class="form-control-sm" type="password" @bind-value="password" />
+<br />
+<label style="color:darkred" hidden="@hiddenPassword">@wrongPassword</label>
+<br />
+<button type="submit" class="btn btn-primary" @onclick="CheckLoginDetails">Einloggen</button>
+<br />
+<p>Noch kein Kundenkonto?</p>
+<a href="/">Jetzt registrieren</a> <!--add register page path-->
+<p>&copy; 2023 - FunEvents GmbH</p>
+
+@code
+{
+    const string invalidEmail = "Eingabe entspricht keiner gültigen Emailadresse";
+    const string unknownEmail = "Diese Emailadresse ist nicht registriert";
+    const string wrongPassword = "Email und Passwort stimmen nicht überein";
+
+    string email;
+    string password;
+
+    string emailError;
+    bool hiddenEmail = true;
+    bool hiddenPassword = true;
+
+    void CheckLoginDetails()
+    {
+        //Check if a possible Email was input
+        if (CheckEmailInput())
+        {
+            //Check if the Email exists
+            if (CheckEmail())
+            {
+                //Check if the password is correct
+                if (Translator.CheckPassword(password, email, Context))
+                {
+                    //Log the user in
+                    //To-Do
+                }
+                else
+                {
+                    hiddenPassword = false;
+                    hiddenEmail = true;
+                }
+            }
+            else
+            {
+                emailError = unknownEmail;
+                hiddenEmail = false;
+            }
+        }
+        else
+        {
+            emailError = invalidEmail;
+            hiddenEmail = false;
+        }
+    }
+
+    bool CheckEmailInput()
+    {
+        //TO-DO Email input validation
+        return true;
+    }
+
+    bool CheckEmail()
+    {
+        return (Context.tbl_Kunden.Any(k => k.kd_EMail == email));
+    }
+}
