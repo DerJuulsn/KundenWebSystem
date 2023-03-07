@@ -17,7 +17,7 @@ namespace KundenWebSystem.Data
 
         public async Task<List<tbl_Buchungen>> GetBuchungenForUserAsync(int userId)
         {
-            return await this.databaseContext.tbl_Buchungen.Include(o => o.ed_EvDaten).Include(o => o.ed_EvDaten.et_Event).Where(buchung => buchung.kd_KundenID == userId).ToListAsync();
+            return await this.databaseContext.tbl_Buchungen.Include(o => o.ed_EvDaten.et_Event).Where(buchung => buchung.kd_KundenID == userId).ToListAsync();
         }
 
         public async Task<tbl_EventDaten> GetEventDatenFromId(int eventDatenID)
@@ -25,8 +25,7 @@ namespace KundenWebSystem.Data
             return await this.databaseContext.tbl_EventDaten
                 .Include(o => o.et_Event.ev_EvVeranstalter)
                 .Include(o => o.et_Event.ek_EvKategorie)
-                .Where(eventDaten => eventDaten.ed_EvDatenID == eventDatenID)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(eventDaten => eventDaten.ed_EvDatenID == eventDatenID);
         }
 
         public async Task<tbl_Buchungen> GetBuchungFromId(int buchungId)
@@ -35,11 +34,4 @@ namespace KundenWebSystem.Data
         }
     }
 
-    public static class BookingExtensions
-    {
-        public static int GetFreeSpots(this tbl_EventDaten eventDaten)
-        {
-            return eventDaten.ed_MaxTeilnehmer - eventDaten.ed_AktTeilnehmer;
-        }
-    }
 }
