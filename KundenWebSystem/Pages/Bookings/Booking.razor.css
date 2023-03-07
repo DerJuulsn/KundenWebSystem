@@ -1,0 +1,33 @@
+﻿.no-margin {
+    margin: 0;
+}
+
+.dropdown-plaetze {
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+}
+
+    .dropdown-plaetze > select {
+        border: 1px solid black;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        border-radius: .25rem;
+    }
+
+    .dropdown-plaetze > label {
+        border: 1px solid black;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        border-radius: .25rem;
+        background-color: #e2e2e2
+    }
+
+#your-booking-container {
+    margin-top: 20px;
+}

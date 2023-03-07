@@ -11,8 +11,4 @@
       <ProjectReference Include="..\KundenWebSystem.Database\KundenWebSystem.Database.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Data" />
-    </ItemGroup>
-
 </Project>

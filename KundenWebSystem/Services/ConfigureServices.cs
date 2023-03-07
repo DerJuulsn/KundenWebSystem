@@ -1,3 +1,4 @@
+using KundenWebSystem.Data;
 using KundenWebSystem.Data.Eventseite;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,7 @@ namespace KundenWebSystem.Services
             // Configure KWS Services here
             services.AddScoped<EventService>();
             services.AddScoped<HashTranslatorService>();
+            services.AddScoped<BookingService>();
         }
     }
 }

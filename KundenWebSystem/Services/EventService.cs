@@ -1,6 +1,5 @@
 ﻿using KundenWebSystem.Database.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ namespace KundenWebSystem.Data.Eventseite
     public class EventService
     {
         private KWSContext eventcontext;
-
 
         public EventService(KWSContext context)
         {

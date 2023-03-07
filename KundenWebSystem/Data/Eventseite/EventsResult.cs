@@ -13,7 +13,5 @@ namespace KundenWebSystem.Data.Eventseite
         public decimal EventDatenPreis { get; set; }
         public string VeranstalterName { get; set; }
         public string EventBezeichnung { get; set; }
-
-
     }
 }

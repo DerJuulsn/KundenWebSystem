@@ -8,6 +8,7 @@ namespace KundenWebSystem.Database.Model
 {
     public partial class tbl_Buchungen
     {
+
         [Key]
         public int bu_BuchungsID { get; set; }
 
