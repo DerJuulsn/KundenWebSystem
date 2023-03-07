@@ -24,7 +24,6 @@ namespace KundenWebSystem
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
             // !! do not configure services here !! use ConfigureKWSServices!
             services.ConfigureKWSServices();
