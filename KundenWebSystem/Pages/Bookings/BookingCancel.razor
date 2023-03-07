@@ -92,11 +92,12 @@
         eventDatenId = CurrentEventData.ed_EvDatenID;
     }
 
-    private void OnPopupInteraction(bool value)
+    private async Task OnPopupInteraction(bool value)
     {
         if (value)
         {
             CurrentBookings.bu_Storniert = value;
+            await Context.SaveChangesAsync();
         }
         else
         {
