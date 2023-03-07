@@ -1,9 +1,7 @@
-
 using KundenWebSystem.Database.Model;
+using KundenWebSystem.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +24,10 @@ namespace KundenWebSystem
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSingleton<WeatherForecastService>();
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
+            // !! do not configure services here !! use ConfigureKWSServices!
+            services.ConfigureKWSServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
