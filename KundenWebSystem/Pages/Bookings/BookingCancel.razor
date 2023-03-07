@@ -36,14 +36,14 @@
             </div>
         </div>
 
-        @if (CurrentEventData != null)
+        @if (CurrentBookings != null)
         {
             <div class="row">
                 <div class="col">
-                    @CurrentEventData.ed_Preis
+                    @CurrentBookings.ed_EvDaten.ed_Preis
                 </div>
                 <div class="col">
-                    @CurrentEventData.ed_MaxTeilnehmer
+                    @CurrentBookings.ed_EvDaten.ed_MaxTeilnehmer
                 </div>
             </div>
         }
@@ -60,13 +60,6 @@
 
 
 @code {
-    private tbl_EventDaten _CurrentEventData;
-
-    public tbl_EventDaten CurrentEventData
-    {
-        get { return _CurrentEventData; }
-        set { _CurrentEventData = value; }
-    }
     private tbl_Buchungen _CurrentBookings;
 
     public tbl_Buchungen CurrentBookings
@@ -86,9 +79,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
         CurrentBookings = await bookingService.GetBuchungFromId(BookingId);
-        eventDatenId = CurrentEventData.ed_EvDatenID;
+        eventDatenId = CurrentBookings.ed_EvDatenID;
     }
 
     private async Task OnPopupInteraction(bool value)
