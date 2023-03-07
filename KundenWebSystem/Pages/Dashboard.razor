@@ -1,8 +1,8 @@
 ﻿@page "/Dashboard"
 @using KundenWebSystem.Database.Model
-@using Microsoft.EntityFrameworkCore  
+@using Microsoft.EntityFrameworkCore
 @using System;
-@using System.Reflection; 
+@using System.Reflection;
 @inject KWSContext Context
 
 
@@ -30,7 +30,6 @@
                     <h6 class="card-subtitle mb-2 text-muted">@Bezeichnung</h6>
                     <p class="card-text">@Beschreibung</p>
                     <a href="Event/@EventID" class="card-link">Details ansehen</a>
-                    
                 </div>
             </div>
         </div>
@@ -59,6 +58,8 @@
         Kundenachname = kunde.kd_Name;
         //async Task OnGetAsync()
         //{
+
+
 
         var buchungen = await Context.tbl_Buchungen.Where(x => x.kd_KundenID == kid && x.bu_Storniert == false).FirstAsync();
         var eventdaten = await Context.tbl_EventDaten.Where(x => x.ed_EvDatenID == buchungen.ed_EvDatenID && x.ed_Beginn > System.DateTime.Now && x.ed_Freigegeben == true).FirstAsync();
