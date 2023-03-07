@@ -5,6 +5,7 @@
 @using Components
 @inject KWSContext Context
 @inject BookingService bookingService
+@inject IJSRuntime JsRuntime
 
 <div class="row container-fluid">
     <h1>Details zur Buchung</h1>
@@ -47,9 +48,7 @@
             </div>
         }
     </div>
-
     <hr />
-
     <div>
         <div class="row">
             <div class="col"><a href="/bookings">Zurück zur Übersicht</a></div>
@@ -98,11 +97,9 @@
         {
             CurrentBookings.bu_Storniert = value;
             await Context.SaveChangesAsync();
+            await JsRuntime.InvokeVoidAsync("alert", "Buchung storniert!");
         }
-        else
-        {
-            // do smth
-        }
+        else { }
     }
 
 

@@ -33,5 +33,4 @@ namespace KundenWebSystem.Data
             return await this.databaseContext.tbl_Buchungen.Include(o => o.ed_EvDaten).Where(buchung => buchung.bu_BuchungsID == buchungId).FirstOrDefaultAsync();
         }
     }
-
 }
