@@ -25,7 +25,7 @@ else
             <div class="row">
                 <div class="col"><p>@this.eventDaten.ed_Preis</p></div>
                 <div class="col"><p>@this.eventDaten.ed_AktTeilnehmer</p></div>
-                <div class="col"><p>@(this.eventDaten.ed_MaxTeilnehmer - this.eventDaten.ed_AktTeilnehmer)</p></div>
+                <div class="col"><p>@this.eventDaten.FreeSpots</p></div>
             </div>
         </div>
         <div class="container-fluid">
@@ -34,7 +34,7 @@ else
                 <div class="col no-margin dropdown-plaetze">
                     <label for="anzahl-plaetze-label">Anzahl Plätze</label>
                     <select name="anzahl-plaetze-label" id="select-anzahl-plaetze">
-                        @for (int i = 1; i < GetFreeSpots() + 1; i++)
+                        @for (int i = 1; i < this.eventDaten.FreeSpots + 1; i++)
                         {
                             <option value="@i">@i</option>
                         }
@@ -62,11 +62,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         this.eventDaten = await bookingService.GetEventDatenFromId(EventDataId);
-    }
-
-    private int GetFreeSpots()
-    {
-        return this.eventDaten.GetFreeSpots();
     }
 
     public void ClickBtnBuchen()
