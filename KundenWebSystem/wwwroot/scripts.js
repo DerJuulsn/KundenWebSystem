@@ -25,4 +25,4 @@ setInterval(function () {
     if(currentCount > 3) {
         currentCount = 0;
     }
-}, 6000);
+}, 3000);

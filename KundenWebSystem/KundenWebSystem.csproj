@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Data" />
-      <Folder Include="Pages\Example" />
     </ItemGroup>
 
 </Project>
