@@ -68,6 +68,14 @@
         get { return _CurrentEventData; }
         set { _CurrentEventData = value; }
     }
+    private tbl_Buchungen _CurrentBookings;
+
+    public tbl_Buchungen CurrentBookings
+    {
+        get { return _CurrentBookings; }
+        set { _CurrentBookings = value; }
+    }
+
 
 
     private Popup popup;
@@ -80,6 +88,7 @@
     protected override async Task OnInitializedAsync()
     {
         CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
+        CurrentBookings = await bookingService.GetBuchungFromId(BookingId);
         eventDatenId = CurrentEventData.ed_EvDatenID;
     }
 
@@ -87,11 +96,11 @@
     {
         if (value)
         {
-
+            CurrentBookings.bu_Storniert = value;
         }
         else
         {
-
+            // do smth
         }
     }
 
