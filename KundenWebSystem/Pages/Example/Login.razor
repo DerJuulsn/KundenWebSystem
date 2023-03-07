@@ -1,7 +1,9 @@
 ﻿@page "/Login"
+@using System.Text.RegularExpressions
 @using KundenWebSystem.Database.Model
+@using KundenWebSystem.Services 
 @inject KWSContext Context
-@inject HashTranslator Translator
+@inject SignInService SIService 
 
 <h3>Anmeldebereich</h3>
 <h4>Für Bestandskunden</h4>
@@ -18,7 +20,7 @@
 <button type="submit" class="btn btn-primary" @onclick="CheckLoginDetails">Einloggen</button>
 <br />
 <p>Noch kein Kundenkonto?</p>
-<a href="/">Jetzt registrieren</a> <!--add register page path-->
+<a href="/">Jetzt registrieren</a> <!--ToDO: add register page path-->
 <p>&copy; 2023 - FunEvents GmbH</p>
 
 @code
@@ -26,6 +28,8 @@
     const string invalidEmail = "Eingabe entspricht keiner gültigen Emailadresse";
     const string unknownEmail = "Diese Emailadresse ist nicht registriert";
     const string wrongPassword = "Email und Passwort stimmen nicht überein";
+
+    Regex emailValidation = new Regex(@"[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]{2,4}");
 
     string email;
     string password;
@@ -43,15 +47,16 @@
             if (CheckEmail())
             {
                 //Check if the password is correct
-                if (Translator.CheckPassword(password, email, Context))
-                {
-                    //Log the user in
-                    //To-Do
-                }
-                else
+                if (!SIService.TryLogIn(password, email))
                 {
                     hiddenPassword = false;
                     hiddenEmail = true;
+                }
+                else
+                {
+                    hiddenPassword = true;
+                    hiddenEmail = true;
+                    //TO-DO: redirect to dashboard
                 }
             }
             else
@@ -69,8 +74,9 @@
 
     bool CheckEmailInput()
     {
-        //TO-DO Email input validation
-        return true;
+        if (emailValidation.IsMatch(email))
+            return true;
+        else return false;
     }
 
     bool CheckEmail()

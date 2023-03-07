@@ -6,19 +6,31 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using KundenWebSystem.Database.Model;
 
-namespace KundenWebSystem.Database.Model
+namespace KundenWebSystem.Services
 {
-    public class HashTranslator
+    public class HashTranslatorService
     {
-        public bool CheckPassword(string password, string email, KWSContext context)
+        private readonly KWSContext context;
+        private tbl_Kunden? lastlogin;
+
+        public HashTranslatorService(KWSContext context)
+        {
+            this.context = context;
+        }
+
+        public bool CheckPassword(string password, string email)
         {
             try
             {
                 //Get hash from the database
-                string? storedPasswordHash = context.tbl_Kunden.Where(k => k.kd_EMail == email).First().kd_PasswortHash;
+                lastlogin = context.tbl_Kunden.Where(k => k.kd_EMail == email).First();
+                string? storedPasswordHash = lastlogin.kd_PasswortHash;
 
                 //transform password into hash
                 string? passwordHash = StringToHash(password);
+
+                if (passwordHash == null)
+                    return false;
 
                 //compare the hashes
                 if (passwordHash.Equals(storedPasswordHash))
@@ -34,6 +46,10 @@ namespace KundenWebSystem.Database.Model
         public string? StringToHash(string? input)
         {
             MD5 md5 = MD5.Create() ;
+
+            if (input == null)
+                return null;
+
             byte[] passwordInBytes = Encoding.UTF8.GetBytes(input);
             byte[] passwordHashInBytes = md5.ComputeHash(passwordInBytes);
 
@@ -44,6 +60,11 @@ namespace KundenWebSystem.Database.Model
             }
 
             return sb.ToString();
+        }
+
+        public tbl_Kunden GetLastLogin()
+        {
+            return lastlogin;
         }
     }
 }
