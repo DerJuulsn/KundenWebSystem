@@ -10,11 +10,13 @@ namespace KundenWebSystem.Services
         private static Dictionary<string, int> loggedInUser = new();
 
         private readonly SessionStorageService storageService;
+        private readonly HashTranslatorService hashTranslator;
         private readonly KWSContext db;
 
-        public SignInService(SessionStorageService storageService, KWSContext db)
+        public SignInService(SessionStorageService storageService, HashTranslatorService hashTranslator, KWSContext db)
         {
             this.storageService = storageService;
+            this.hashTranslator = hashTranslator;
             this.db = db;
         }
 
@@ -31,15 +33,20 @@ namespace KundenWebSystem.Services
             return null;
         }
 
-        // public bool TryLogIn(LogInModel model)
-        // {
-        //     // TODO
-        //     //db.tbl_Kunden.Where(kunden => kunden.)
-        //     
-        //     // LogInUser()
-        //
-        //     return false;
-        // }
+        public bool TryLogIn(string password, string email)
+        {
+            if (hashTranslator.CheckPassword(password, email))
+            {
+                tbl_Kunden user = hashTranslator.GetLastLogin();
+
+                if (user != null)
+                {
+                    _ = LogInUser(user);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private async Task LogInUser(tbl_Kunden kunde)
         {
