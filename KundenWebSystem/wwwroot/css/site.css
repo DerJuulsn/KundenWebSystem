@@ -19,7 +19,10 @@ a, .btn-link {
 }
 
 .content {
+    margin: 1rem 1rem 1rem;
     padding-top: 1.1rem;
+    background: white;
+    border-radius: 15px;
 }
 
 .valid.modified:not([type=checkbox]) {
