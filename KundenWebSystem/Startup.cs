@@ -1,5 +1,4 @@
-using KundenWebSystem.Data;
-using KundenWebSystem.Data.Example;
+
 using KundenWebSystem.Database.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -27,7 +26,6 @@ namespace KundenWebSystem
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddDbContext<KWSContext>(config => config.UseSqlServer(Configuration.GetConnectionString("KWSContext")));
         }
 
