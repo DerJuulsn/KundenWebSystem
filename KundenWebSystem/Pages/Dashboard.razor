@@ -57,21 +57,15 @@
         var kunde = await Context.tbl_Kunden.Where(x => x.kd_KundenID == kid).FirstAsync();
         Kundenname = kunde.kd_Vorname;
         Kundenachname = kunde.kd_Name;
-        //async Task OnGetAsync()
-        //{
 
         var buchungen = await Context.tbl_Buchungen.Where(x => x.kd_KundenID == kid && x.bu_Storniert == false).FirstAsync();
         var eventdaten = await Context.tbl_EventDaten.Where(x => x.ed_EvDatenID == buchungen.ed_EvDatenID && x.ed_Beginn > System.DateTime.Now && x.ed_Freigegeben == true).FirstAsync();
         var events = await Context.tbl_Events.Where(x => x.et_EventID == eventdaten.et_EventID).FirstAsync();
-        //var abenteuer = await Context.tbl_Events.FindAsync();
 
         DatumUhr = eventdaten.ed_Beginn;
         Bezeichnung = events.et_Bezeichnung;
         Beschreibung = events.et_Beschreibung;
         EventID = events.et_EventID;
-
-
-        //}
 
     }
 
