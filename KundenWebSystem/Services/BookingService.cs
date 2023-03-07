@@ -29,10 +29,9 @@ namespace KundenWebSystem.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<int> GetEventDatenIdFromBuchungId(int buchungId)
+        public async Task<tbl_Buchungen> GetBuchungFromId(int buchungId)
         {
-            tbl_Buchungen buchung = await this.databaseContext.tbl_Buchungen.Where(buchung => buchung.bu_BuchungsID == buchungId).FirstOrDefaultAsync();
-            return buchung == null ? -1 : buchung.ed_EvDatenID;
+            return await this.databaseContext.tbl_Buchungen.Include(o => o.ed_EvDaten).Where(buchung => buchung.bu_BuchungsID == buchungId).FirstOrDefaultAsync();
         }
     }
 
