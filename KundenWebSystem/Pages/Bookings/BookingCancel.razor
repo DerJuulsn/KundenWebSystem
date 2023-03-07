@@ -76,6 +76,7 @@
     protected override async Task OnInitializedAsync()
     {
         CurrentEventData = await bookingService.GetEventDatenFromId(BookingId);
+        eventDatenId = CurrentEventData.ed_EvDatenID;
     }
 
     private void OnPopupInteraction(bool value)
@@ -89,6 +90,7 @@
 
     [Parameter]
     public int BookingId { get; set; }
+
 
     private int eventDatenId = -1;
 
