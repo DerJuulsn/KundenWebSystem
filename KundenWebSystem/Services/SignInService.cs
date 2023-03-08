@@ -7,20 +7,18 @@ namespace KundenWebSystem.Services
 {
     public class SignInService
     {
-        private static Dictionary<string, int> loggedInUser = new();
+        private static readonly Dictionary<string, int> loggedInUser = new();
 
         private readonly SessionStorageService storageService;
         private readonly HashTranslatorService hashTranslator;
-        private readonly KWSContext db;
 
-        public SignInService(SessionStorageService storageService, HashTranslatorService hashTranslator, KWSContext db)
+        public SignInService(SessionStorageService storageService, HashTranslatorService hashTranslator)
         {
             this.storageService = storageService;
             this.hashTranslator = hashTranslator;
-            this.db = db;
         }
 
-        public async Task<int?> GetLoggedInUser()
+        public async Task<int?> GetLoggedInUserId()
         {
             var sessionID = await storageService.GetSessionID();
             
@@ -33,19 +31,16 @@ namespace KundenWebSystem.Services
             return null;
         }
 
-        public bool TryLogIn(string password, string email)
+        public async Task<bool> TryLogIn(string password, string email)
         {
-            if (hashTranslator.CheckPassword(password, email))
-            {
-                tbl_Kunden user = hashTranslator.GetLastLogin();
+            var kunde = await hashTranslator.CheckPassword(password, email);
 
-                if (user != null)
-                {
-                    _ = LogInUser(user);
-                    return true;
-                }
-            }
-            return false;
+            if (kunde == null) 
+                return false;
+            
+            await LogInUser(kunde);
+            
+            return true;
         }
 
         private async Task LogInUser(tbl_Kunden kunde)

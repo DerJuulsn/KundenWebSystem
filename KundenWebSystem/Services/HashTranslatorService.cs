@@ -5,66 +5,54 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using KundenWebSystem.Database.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace KundenWebSystem.Services
 {
     public class HashTranslatorService
     {
         private readonly KWSContext context;
-        private tbl_Kunden? lastlogin;
 
-        public HashTranslatorService(KWSContext context)
-        {
-            this.context = context;
-        }
+        public HashTranslatorService(KWSContext context) => this.context = context;
 
-        public bool CheckPassword(string password, string email)
+        public async Task<tbl_Kunden?> CheckPassword(string password, string email)
         {
             try
             {
                 //Get hash from the database
-                lastlogin = context.tbl_Kunden.Where(k => k.kd_EMail == email).First();
-                string? storedPasswordHash = lastlogin.kd_PasswortHash;
+                var kunde = await context.tbl_Kunden.Where(k => k.kd_EMail == email).FirstOrDefaultAsync();
+
+                if (kunde is not {kd_PasswortHash: not null})
+                    return null;
+
+                var storedPasswordHash = kunde.kd_PasswortHash!;
 
                 //transform password into hash
-                string? passwordHash = StringToHash(password);
-
-                if (passwordHash == null)
-                    return false;
+                var passwordHash = StringToHash(password);
 
                 //compare the hashes
-                if (passwordHash.Equals(storedPasswordHash))
-                    return true;
-                else return false;
+                return passwordHash.Equals(storedPasswordHash) ? kunde : null;
             }
             catch (Exception ex)
             {
-                return false;
+                Console.WriteLine(ex);
+                return null;
             }
         }
 
-        public string? StringToHash(string? input)
+        private static string StringToHash(string input)
         {
-            MD5 md5 = MD5.Create() ;
+            var md5 = MD5.Create();
 
-            if (input == null)
-                return null;
+            var passwordInBytes = Encoding.UTF8.GetBytes(input);
+            var passwordHashInBytes = md5.ComputeHash(passwordInBytes);
 
-            byte[] passwordInBytes = Encoding.UTF8.GetBytes(input);
-            byte[] passwordHashInBytes = md5.ComputeHash(passwordInBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < passwordHashInBytes.Length; i++)
-            {
-                sb.Append(passwordHashInBytes[i].ToString("x2"));
-            }
+            var sb = new StringBuilder();
+            foreach (var t in passwordHashInBytes) 
+                sb.Append(t.ToString("x2"));
 
             return sb.ToString();
-        }
-
-        public tbl_Kunden GetLastLogin()
-        {
-            return lastlogin;
         }
     }
 }
