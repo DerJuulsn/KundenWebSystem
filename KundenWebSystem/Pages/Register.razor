@@ -1,0 +1,111 @@
+﻿@page "/register"
+
+<h1>Registrierung</h1>
+
+<form method="post">
+    <div>
+        <label for="vorname">Vorname:</label>
+        <input type="text" id="vorname" name="Vorname" @bind-value="KdVorname" required/>
+    </div>
+    <div>
+        <label for="nachname">Nachname:</label>
+        <input type="text" id="nachname" name="Nachname" @bind-value="KdNachname" required />
+    </div>
+    <div>
+        <label for="strasse">Straße:</label>
+        <input type="text" id="strasse" name="Strasse" @bind-value="KdStrasse" required />
+    </div>
+    <div>
+        <label for="hausnummer">Hausnummer:</label>
+        <input type="text" id="hausnummer" name="Hausnummer" @bind-value="KdHausnummer" required />
+    </div>
+    <div>
+        <label for="plz">Postleitzahl:</label>
+        <input type="text" id="plz" name="PLZ" @bind-value="KdPlz" required />
+    </div>
+    <div>
+        <label for="stadt">Stadt:</label>
+        <input type="text" id="stadt" name="Stadt" @bind-value="KdStadt" required />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" @bind-value="KdEmail" required />
+    </div>
+    <div>
+        <label for="passwort">Passwort:</label>
+        <input type="password" id="Passwort" name="Passwort" @bind-value="KdPasswort" required />
+    </div>
+    <div>
+        <label for="passwortWiederholen">Passwort wiederholen:</label>
+        <input type="password" id="PasswortWiederholen" name="PasswortWiederholen" @bind-value="WdPasswort" required />
+    </div>
+    <button type="submit">Registrieren</button>
+</form>
+
+@code
+{
+
+
+    //public tbl_Kunden KundenModel { get; set; } = new();
+
+    // [BindProperty]
+    // public RegisterModel RegisterModel { get; set; }
+
+
+    String KdVorname;
+    String KdNachname;
+    String KdStrasse;
+    String KdHausnummer;
+    String KdPlz;
+    String KdStadt;
+    String KdTelefon;
+    String KdEmail;
+    String KdPasswort;
+    String WdPasswort;
+
+   
+
+    /*
+    public async Task<IActionResult> OnPostAsync()
+    {
+
+
+
+
+
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+
+        if (KdPasswort != WdPasswort)
+        {
+            ModelState.AddModelError("KdPasswort", "Die Passwörter stimmen nicht überein.");
+            ModelState.AddModelError("WdPasswort", "Die Passwörter stimmen nicht überein.");
+            return Page();
+        }
+
+
+
+        var kunde = new tbl_Kunden
+        {
+            kd_Vorname = KdVorname,
+            kd_Name = KdNachname,
+            kd_Strasse = KdStrasse,
+            kd_HNummer = KdHausnummer,
+            kd_PLZ = KdPlz,
+            kd_Ort = KdStadt,
+            kd_Telefon = KdTelefon,
+            kd_EMail = KdEmail,
+            kd_PasswortHash = KdPasswort,
+        };
+
+        _dbContext.tbl_Kunden.Add(kunde);
+        await _dbContext.SaveChangesAsync();
+
+        return RedirectToPage("/login");
+    }
+    */
+
+}

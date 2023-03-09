@@ -8,7 +8,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Include="wwwroot\img\bike.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\KundenWebSystem.Database\KundenWebSystem.Database.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     </ItemGroup>
 
 </Project>

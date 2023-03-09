@@ -12,6 +12,7 @@ namespace KundenWebSystem.Services
             services.AddScoped<SignInService>();
             // Configure KWS Services here
             services.AddScoped<EventService>();
+            services.AddScoped<HashTranslatorService>();
             services.AddScoped<BookingService>();
             services.AddSingleton(new LanguageService());
         }
