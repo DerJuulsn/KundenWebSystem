@@ -1,17 +1,19 @@
 ﻿@page "/bookings"
 @using Data;
 @using KundenWebSystem.Database.Model;
+@using KundenWebSystem.Services;
 @inject BookingService bookingService;
+@inject LanguageService languageService;
 
-<h3 style="font-weight: bold">Meine aktiven Buchungen</h3>
+<h3 style="font-weight: bold">@languageService.Get("my-active-bookings")</h3>
 <hr />
 <div class="container-fluid" id="booking-list">
     <table class="table table-striped">
         <thead class="thead-light">
             <tr>
-                <th scope="col">Eventbezeichnungen</th>
-                <th scope="col">Eventbeginn</th>
-                <th scope="col">Startort</th>
+                <th scope="col">@languageService.Get("event-title")</th>
+                <th scope="col">@languageService.Get("event-starttime")</th>
+                <th scope="col">@languageService.Get("event-startlocation")</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -22,7 +24,7 @@
                     <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
                     <td>@buchung.ed_EvDaten.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
                     <td>@buchung.ed_EvDaten.ed_StartOrt</td>
-                    <td><a href="/bookings/cancel/@buchung.bu_BuchungsID">Details</a></td>
+                    <td><a href="/bookings/cancel/@buchung.bu_BuchungsID">@languageService.Get("details")</a></td>
                 </tr>
             }
         </tbody>

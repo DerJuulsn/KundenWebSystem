@@ -1,7 +1,9 @@
 ﻿@page "/bookings/new/{eventDataId:int?}"
 @using Data;
 @using KundenWebSystem.Database.Model;
+@using Services;
 @inject BookingService bookingService;
+@inject LanguageService languageService;
 <h1>Eventbuchung</h1>
 <hr />
 @if (this.eventDaten == null)
@@ -14,7 +16,7 @@ else
 {
     <KundenWebSystem.Pages.Bookings.Components.EventData EventDataId="@EventDataId" />
     <div class="container-fluid" id="your-booking-container">
-        <h3>Ihre Buchung</h3>
+        <h3>@languageService.Get("your-bookings")</h3>
         <hr />
         <div class="container-fluid">
             <div class="row">
