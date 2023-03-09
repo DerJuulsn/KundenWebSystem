@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using KundenWebSystem.Data;
 using KundenWebSystem.Database.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace KundenWebSystem.Services
 {
@@ -18,45 +20,33 @@ namespace KundenWebSystem.Services
             this.context = context;
         }
 
-        public bool CheckPassword(string password, string email)
+        public bool CheckPassword(string hashedPassword, string typedPassword)
         {
             try
             {
-                //Get hash from the database
-                lastlogin = context.tbl_Kunden.Where(k => k.kd_EMail == email).First();
-                string? storedPasswordHash = lastlogin.kd_PasswortHash;
-
-                //transform password into hash
-                string? passwordHash = StringToHash(password);
-
-                if (passwordHash == null)
-                    return false;
-
-                //compare the hashes
-                if (passwordHash.Equals(storedPasswordHash))
-                    return true;
-                else return false;
+                // transform and check
+                return StringToHash(typedPassword) == hashedPassword;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        public string? StringToHash(string? input)
+        private static string? StringToHash(string? input)
         {
-            MD5 md5 = MD5.Create() ;
+            var md5 = MD5.Create();
 
             if (input == null)
                 return null;
 
-            byte[] passwordInBytes = Encoding.UTF8.GetBytes(input);
-            byte[] passwordHashInBytes = md5.ComputeHash(passwordInBytes);
+            var passwordInBytes = Encoding.UTF8.GetBytes(input);
+            var passwordHashInBytes = md5.ComputeHash(passwordInBytes);
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < passwordHashInBytes.Length; i++)
+            var sb = new StringBuilder();
+            foreach (var t in passwordHashInBytes)
             {
-                sb.Append(passwordHashInBytes[i].ToString("x2"));
+                sb.Append(t.ToString("x2"));
             }
 
             return sb.ToString();

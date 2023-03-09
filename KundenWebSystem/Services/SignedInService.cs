@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using KundenWebSystem.Data;
 using KundenWebSystem.Database.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace KundenWebSystem.Services
 {
     public class SignInService
     {
+        public event EventHandler? Changed;
+        
         private static Dictionary<string, int> loggedInUser = new();
 
         private readonly SessionStorageService storageService;
@@ -23,7 +27,7 @@ namespace KundenWebSystem.Services
         public async Task<int?> GetLoggedInUser()
         {
             var sessionID = await storageService.GetSessionID();
-            
+
             if (sessionID == null)
                 return null;
 
@@ -33,19 +37,21 @@ namespace KundenWebSystem.Services
             return null;
         }
 
-        public bool TryLogIn(string password, string email)
+        public async Task<bool> TryLogIn(LoginModel model)
         {
-            if (hashTranslator.CheckPassword(password, email))
-            {
-                tbl_Kunden user = hashTranslator.GetLastLogin();
+            var user = await db.tbl_Kunden.FirstOrDefaultAsync(k => k.kd_EMail == model.Email);
 
-                if (user != null)
-                {
-                    _ = LogInUser(user);
-                    return true;
-                }
-            }
-            return false;
+            if (user?.kd_PasswortHash == null)
+                return false;
+
+            if (!hashTranslator.CheckPassword(user.kd_PasswortHash, model.Password)) 
+                return false;
+            
+            await LogInUser(user);
+            Changed?.Invoke(this, EventArgs.Empty);
+            
+            return true;
+
         }
 
         private async Task LogInUser(tbl_Kunden kunde)

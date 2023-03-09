@@ -4,7 +4,7 @@
 @inject BookingService bookingService;
 <h1>Eventbuchung</h1>
 <hr />
-@if (this.eventDaten == null)
+@if (eventDaten == null)
 {
     <div class="container">
         <p>Loading...</p>
@@ -57,7 +57,7 @@ else
     [Parameter]
     public int EventDataId { get; set; }
 
-    private tbl_EventDaten eventDaten;
+    private tbl_EventDaten? eventDaten;
 
     protected override async Task OnInitializedAsync()
     {

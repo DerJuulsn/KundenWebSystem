@@ -1,9 +1,34 @@
 ﻿@inherits LayoutComponentBase
-<div class="page h-screen">
-    <NavMenu/>
-    <main>
-        <article class="content px-4">
+@inject SignInService SignInService
+
+<div class="d-flex flex-column flex-fill">
+    <CascadingValue Value="@LoggedInUser">
+        <NavMenu/>
+        <main class="d-flex flex-column flex-fill p-4">
             @Body
-        </article>
-    </main>
+        </main>
+    </CascadingValue>
 </div>
+
+@code {
+
+    private int? LoggedInUser { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            SignInService.Changed += async (_, _) => await LogInChanged();
+            await LogInChanged();
+        }
+        
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task LogInChanged()
+    {
+        LoggedInUser = await SignInService.GetLoggedInUser();
+        await InvokeAsync(StateHasChanged);
+    }
+
+}
