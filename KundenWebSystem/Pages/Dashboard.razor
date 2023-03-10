@@ -29,7 +29,7 @@
                     <h5 class="card-title">Datum: @DatumUhr Uhr</h5>
                     <h6 class="card-subtitle mb-2 text-muted">@Bezeichnung</h6>
                     <p class="card-text">@Beschreibung</p>
-                    <a href="Event/@EventID" class="card-link">Details ansehen</a>
+                    <a href="bookings/cancel/@EventID" class="card-link">Details ansehen</a>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
         DatumUhr = eventdaten.ed_Beginn;
         Bezeichnung = events.et_Bezeichnung;
         Beschreibung = events.et_Beschreibung;
-        EventID = events.et_EventID;
+        EventID = buchungen.bu_BuchungsID;
 
     }
 
