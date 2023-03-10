@@ -4,6 +4,8 @@
 @using KundenWebSystem.Services;
 @inject BookingService bookingService;
 @inject LanguageService languageService;
+@inject SignInService SignInService
+@inject NavigationManager Navigation
 
 <h3 style="font-weight: bold">@languageService.Get("my-active-bookings")</h3>
 <hr />
@@ -18,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(tbl_Buchungen buchung in this.userBookingList)
+            @foreach (tbl_Buchungen buchung in this.userBookingList)
             {
                 <tr>
                     <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
@@ -32,12 +34,30 @@
 </div>
 @code {
 
-    private static int USER_ID = 1;
-
     private List<tbl_Buchungen> userBookingList = new List<tbl_Buchungen>();
 
-    protected override async Task OnInitializedAsync()
+    public int? LoggedInUser { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        userBookingList = await bookingService.GetBuchungenForUserAsync(USER_ID);
+        if (!firstRender)
+        {
+            if(LoggedInUser != null)
+            {
+                userBookingList = await bookingService.GetBuchungenForUserAsync(LoggedInUser.Value);
+            }
+            return;
+        }
+
+        LoggedInUser = await SignInService.GetLoggedInUser();
+
+        if (LoggedInUser == null)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        userBookingList = await bookingService.GetBuchungenForUserAsync(LoggedInUser.Value);
+        StateHasChanged();
     }
 }

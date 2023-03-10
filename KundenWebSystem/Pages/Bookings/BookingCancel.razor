@@ -1,11 +1,11 @@
 ﻿@page "/bookings/cancel/{bookingId:int?}"
 @using KundenWebSystem.Database.Model
-@using Microsoft.EntityFrameworkCore
 @using KundenWebSystem.Data
 @using Components
+@inject SignInService SignInService
 @inject KWSContext Context
 @inject BookingService bookingService
-@inject IJSRuntime JsRuntime
+@inject NavigationManager Navigation
 
 <div class="row container-fluid">
     <h1>Details zur Buchung</h1>
@@ -57,21 +57,21 @@
         <div>
             <div class="row">
                 <div class="col">
-                @if(CurrentBookings.bu_Storniert)
-                {
-                    <b>Storniert</b>
-                }
-                else
-                {
-                    <b>Offen</b>
-                }
+                    @if (CurrentBookings.bu_Storniert)
+                    {
+                        <b>Storniert</b>
+                    }
+                    else
+                    {
+                        <b>Offen</b>
+                    }
                 </div>
             </div>
         </div>
     }
 
     <hr />
-    
+
     <div>
         <div class="row">
             <div class="col"><a href="/bookings">Zurück zur Übersicht</a></div>
@@ -83,7 +83,7 @@
                 }
                 else
                 {
-                    
+
                 }
             }
         </div>
@@ -99,6 +99,12 @@
         get { return _CurrentBookings; }
         set { _CurrentBookings = value; }
     }
+
+    [Parameter]
+    public int BookingId { get; set; }
+
+
+    private int eventDatenId = -1;
 
 
 
@@ -120,17 +126,33 @@
         if (value)
         {
             CurrentBookings.bu_Storniert = value;
+            CurrentBookings.ed_EvDaten.ed_AktTeilnehmer -= CurrentBookings.bu_GebuchtePlaetze;
             await Context.SaveChangesAsync();
-            await JsRuntime.InvokeVoidAsync("alert", "Buchung storniert!");
         }
         else { }
     }
 
+    public int? LoggedInUser { get; set; }
 
-    [Parameter]
-    public int BookingId { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
 
+        LoggedInUser = await SignInService.GetLoggedInUser();
 
-    private int eventDatenId = -1;
+        if (LoggedInUser == null)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
 
+        if(CurrentBookings.kd_KundenID != LoggedInUser.Value)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        StateHasChanged();
+    }
 }

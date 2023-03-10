@@ -6,6 +6,7 @@
 @inject KWSContext context;
 @inject LanguageService languageService;
 @inject NavigationManager Navigation
+@inject SignInService SignInService
 
 <h1>Eventbuchung</h1>
 <hr />
@@ -90,15 +91,13 @@ else
 
     private tbl_Buchungen CreateBuchung()
     {
-        const int userID = 1; //To-Do: get real user id
-
         tbl_Buchungen buchung = new tbl_Buchungen();
         buchung.bu_Bezahlt = false;
         buchung.bu_GebuchtePlaetze = this.bookedSpotsCount;
         buchung.bu_RechnungErstellt = false;
         buchung.bu_Storniert = false;
         buchung.ed_EvDatenID = this.eventDaten.ed_EvDatenID;
-        buchung.kd_KundenID = userID;
+        buchung.kd_KundenID = LoggedInUser.Value;
 
         this.eventDaten.ed_AktTeilnehmer += this.bookedSpotsCount;
 
@@ -109,13 +108,29 @@ else
     {
         if (value)
         {
-            if((this.eventDaten.FreeSpots - this.bookedSpotsCount) > 0)
-            {
-                await this.context.tbl_Buchungen.AddAsync(CreateBuchung());
-                await this.context.SaveChangesAsync();
-                Navigation.NavigateTo("/bookings");
-            }
+            await this.context.tbl_Buchungen.AddAsync(CreateBuchung());
+            await this.context.SaveChangesAsync();
+            Navigation.NavigateTo("/bookings");
             return;
         }
+    }
+
+    public int? LoggedInUser { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        LoggedInUser = await SignInService.GetLoggedInUser();
+
+        if (LoggedInUser == null)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        StateHasChanged();
     }
 }
