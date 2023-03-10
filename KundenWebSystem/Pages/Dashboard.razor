@@ -4,7 +4,7 @@
 @inject KWSContext Context
 @inject SignInService SignInService
 
-@if (kunde != null && eventdaten != null)
+@if (kunde != null && neusteBuchung != null)
 {
     <div class="container-fluid">
         <h3>Hallo @kunde.kd_Vorname @kunde.kd_Name!</h3>
@@ -26,10 +26,10 @@
                 <span class="fw-bold">Ihr nächstes Event:</span>
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title">Datum: @eventdaten.ed_Beginn Uhr</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@eventdaten.et_Event.et_Bezeichnung</h6>
-                        <p class="card-text">@eventdaten.et_Event.et_Beschreibung</p>
-                        <a href="/Event/@eventdaten.et_EventID" class="card-link">Details ansehen</a>
+                        <h5 class="card-title">Datum: @neusteBuchung.ed_EvDaten.ed_Beginn Uhr</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@neusteBuchung.ed_EvDaten.et_Event.et_Bezeichnung</h6>
+                        <p class="card-text">@neusteBuchung.ed_EvDaten.et_Event.et_Beschreibung</p>
+                        <a href="/bookings/cancel/@neusteBuchung.bu_BuchungsID" class="card-link">Details ansehen</a>
                     </div>
                 </div>
             </div>
@@ -42,8 +42,8 @@
     public int? LoggedInUser { get; set; }
     
     private tbl_Kunden? kunde;
-    private tbl_EventDaten? eventdaten;
-    
+    private tbl_Buchungen? neusteBuchung;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!firstRender)
@@ -59,14 +59,13 @@
 
         kunde = await Context.tbl_Kunden.Where(x => x.kd_KundenID == LoggedInUser).FirstAsync();
 
-        eventdaten = await Context.tbl_Buchungen
+        neusteBuchung = await Context.tbl_Buchungen
             .Include(buchungen => buchungen.ed_EvDaten.et_Event)
             .Where(buchungen => buchungen.kd_KundenID == LoggedInUser && !buchungen.bu_Storniert)
-            .Select(buchungen => buchungen.ed_EvDaten)
-            .Where(x => x.ed_Beginn > DateTime.Now && x.ed_Freigegeben)
-            .OrderBy(daten => daten.ed_Beginn)
+            .Where(buchungen => buchungen.ed_EvDaten.ed_Beginn > DateTime.Now && buchungen.ed_EvDaten.ed_Freigegeben )
+            .OrderBy(daten => daten.ed_EvDaten.ed_Beginn)
             .FirstOrDefaultAsync();
-        
+
         StateHasChanged();
     }
 
