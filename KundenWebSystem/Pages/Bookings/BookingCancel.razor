@@ -51,18 +51,41 @@
     <hr />
 
     <h3>Buchungsstatus</h3>
-    <div>
-        <div class="row">
-            <div class="col">
-                Status:
+
+    @if (CurrentBookings != null)
+    {
+        <div>
+            <div class="row">
+                <div class="col">
+                @if(CurrentBookings.bu_Storniert)
+                {
+                    <b>Storniert</b>
+                }
+                else
+                {
+                    <b>Offen</b>
+                }
+                </div>
             </div>
         </div>
-    </div>
+    }
 
+    <hr />
+    
     <div>
         <div class="row">
             <div class="col"><a href="/bookings">Zurück zur Übersicht</a></div>
-            <div class="col"><button type="button" class="btn btn-danger" @onclick="DoCancelBooking">Buchung stornieren</button></div>
+            @if (CurrentBookings != null)
+            {
+                @if (!CurrentBookings.bu_Storniert)
+                {
+                    <div class="col"><button type="button" class="btn btn-danger" @onclick="DoCancelBooking">Buchung stornieren</button></div>
+                }
+                else
+                {
+                    
+                }
+            }
         </div>
     </div>
 </div>
