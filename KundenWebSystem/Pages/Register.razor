@@ -1,8 +1,4 @@
 ﻿@page "/register"
-@using KundenWebSystem.Database.Model;
-@using KundenWebSystem.Database;
-@using Microsoft.EntityFrameworkCore;
-
 
 <h1>Registrierung</h1>
 
@@ -51,11 +47,9 @@
 
 
     //public tbl_Kunden KundenModel { get; set; } = new();
-    [Inject]
-    private ApplicationDbContext _dbContext { get; set; }
 
-    [BindProperty]
-    public RegisterModel RegisterModel { get; set; }
+    // [BindProperty]
+    // public RegisterModel RegisterModel { get; set; }
 
 
     String KdVorname;
@@ -71,6 +65,7 @@
 
    
 
+    /*
     public async Task<IActionResult> OnPostAsync()
     {
 
@@ -111,5 +106,6 @@
 
         return RedirectToPage("/login");
     }
+    */
 
 }
