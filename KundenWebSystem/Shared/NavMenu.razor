@@ -1,4 +1,5 @@
 ﻿@using KundenWebSystem.Data
+@inject SignInService SignInService
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
@@ -56,8 +57,16 @@
 
 @code {
 
-    [CascadingParameter]
     public int? LoggedInUser { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!firstRender)
+            return;
+
+        SignInService.Changed += async (_, _) => await LogInChanged();
+        await LogInChanged();
+    }
 
     private bool collapseNavMenu = true;
 
@@ -67,5 +76,10 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
-
+    
+    private async Task LogInChanged()
+    {
+        LoggedInUser = await SignInService.GetLoggedInUser();
+        await InvokeAsync(StateHasChanged);
+    }
 }

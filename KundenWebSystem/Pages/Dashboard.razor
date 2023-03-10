@@ -2,8 +2,9 @@
 @using KundenWebSystem.Database.Model
 @using Microsoft.EntityFrameworkCore
 @inject KWSContext Context
+@inject SignInService SignInService
 
-@if (LoggedInUser != null && kunde != null && eventdaten != null)
+@if (kunde != null && eventdaten != null)
 {
     <div class="container-fluid">
         <h3>Hallo @kunde.kd_Vorname @kunde.kd_Name!</h3>
@@ -38,14 +39,18 @@
 
 @code {
     
-    [CascadingParameter]
     public int? LoggedInUser { get; set; }
     
     private tbl_Kunden? kunde;
     private tbl_EventDaten? eventdaten;
-
-    protected override async Task OnInitializedAsync()
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if(!firstRender)
+            return;
+
+        LoggedInUser = await SignInService.GetLoggedInUser();
+        
         if(LoggedInUser == null)
         {
             // Redirect to Login
