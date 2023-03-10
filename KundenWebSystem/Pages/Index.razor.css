@@ -1,3 +1,6 @@
-.carouselMain{
-    alignment: center;
+.img-background {
+    background-image: url(images/mountain-biking.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
