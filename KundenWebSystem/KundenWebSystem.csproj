@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Include="wwwroot\img\bike.jpg" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\KundenWebSystem.Database\KundenWebSystem.Database.csproj" />
     </ItemGroup>
 

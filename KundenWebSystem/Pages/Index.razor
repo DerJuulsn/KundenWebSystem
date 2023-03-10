@@ -1,19 +1,7 @@
 ﻿@page "/"
-@inject IJSRuntime JS
-<div class="d-flex justify-content-center">
-    <div class="carousel slide d-flex justify-content-center" data-bs-ride="carousel">
-        <div class="carousel-inner w-50 h-50">
-            <div class="carousel-item active">
-                <img class="" id="1" src="mountain-biking-g12facdcf0_1920.jpg" alt="MTB_HILL"/>
-            </div>
-        </div>
-    </div>
+
+<div class="flex-fill img-background">
 </div>
 
 @code {
-    private void OnNext()
-    {
-        JS.InvokeAsync<int>("next");
-    }
-
 }

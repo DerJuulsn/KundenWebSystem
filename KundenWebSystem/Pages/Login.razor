@@ -1,76 +1,76 @@
 ﻿@page "/Login"
-@using System.Text.RegularExpressions
-@using KundenWebSystem.Database.Model
-@inject KWSContext Context
-@inject SignInService SiService 
+@using KundenWebSystem.Data
+@inject SignInService SignInService
+@inject NavigationManager NavigationManager
 
 <h3>Anmeldebereich</h3>
-<h4>Für Bestandskunden</h4>
-<label for="InputEmail">Email</label>
-<input id="InputEmail" class="form-control-sm" type="email" @bind-value="email"/>
-<br/>
-<label style="color:darkred" hidden="@hiddenEmail">@emailError</label>
-<br/>
-<label for="InputPassword">Passwort</label>
-<input id="InputPassword" class="form-control-sm" type="password" @bind-value="password"/>
-<br/>
-<label style="color:darkred" hidden="@hiddenPassword">@wrongPassword</label>
-<br/>
-<button type="submit" class="btn btn-primary" @onclick="CheckLoginDetails">Einloggen</button>
-<br/>
-<p>Noch kein Kundenkonto?</p>
-<a href="/">Jetzt registrieren</a> <!--ToDO: add register page path-->
-<p>&copy; 2023 - FunEvents GmbH</p>
+<h5>Für Bestandskunden</h5>
 
-@code
-{
-        const string invalidEmail = "Eingabe entspricht keiner gültigen Emailadresse";
-        const string unknownEmail = "Diese Emailadresse ist nicht registriert";
-        const string wrongPassword = "Email und Passwort stimmen nicht überein";
+<EditForm Model="@model" OnValidSubmit="CheckLoginDetails">
 
-    Regex emailValidation = new Regex(@"[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]{2,4}");
-
-    string email;
-    string password;
-
-    string emailError;
-    bool hiddenEmail = true;
-    bool hiddenPassword = true;
-
-    void CheckLoginDetails()
+    @if (showError)
     {
-        //Check if a possible Email was input
-        if (!CheckEmailInput())
-        {
-            emailError = invalidEmail;
-            hiddenEmail = false;
-
-            return;
-        }
-        
-        //Check if the Email exists
-        if (!CheckEmail())
-        {
-            emailError = unknownEmail;
-            hiddenEmail = false;
-            return;
-        }
-        
-        //Check if the password is correct
-        if (!SiService.TryLogIn(password, email))
-        {
-            hiddenPassword = false;
-            hiddenEmail = true;
-            
-            return;
-        }
-        
-        hiddenPassword = true;
-        hiddenEmail = true;
-        //TODO: redirect to dashboard
+        <label class="text-danger">Email und Passwort stimmen nicht überein</label>
     }
 
-    bool CheckEmailInput() => emailValidation.IsMatch(email);
+    <div class="col my-2">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" @bind-value="model.Email"/>
+    </div>
+    <div class="col my-2">
+        <label class="form-label">Passwort</label>
+        <input class="form-control" type="password" @bind-value="model.Password"/>
+    </div>
+    <button type="submit" class="btn btn-primary my-2" @onclick="CheckLoginDetails" disabled="@tryLogin">Einloggen</button>
+</EditForm>
 
-    bool CheckEmail() => Context.tbl_Kunden.Any(k => k.kd_EMail == email);
+<div class="my-3">
+    <p>Noch kein Kundenkonto?</p>
+    <a href="/register" class="btn-link">Jetzt registrieren</a>
+</div>
+
+@code {
+
+    private readonly LoginModel model = new();
+
+    //Regex emailValidation = new Regex(@"[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]{2,4}");
+
+    private bool showError;
+    private bool tryLogin;
+
+    async Task CheckLoginDetails()
+    {
+        if(tryLogin)
+            return;
+        
+        tryLogin = true;
+
+        try
+        {
+    //Check if the password is correct
+            if (!await SignInService.TryLogIn(model))
+            {
+                showError = true;
+                StateHasChanged();
+                await Task.Delay(TimeSpan.FromSeconds(3));
+                showError = false;
+                StateHasChanged();
+                
+                return;
+            }
+
+            showError = false;
+            NavigationManager.NavigateTo("/dashboard");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        finally
+        {
+            tryLogin = false;
+        }
+    }
+
 }
