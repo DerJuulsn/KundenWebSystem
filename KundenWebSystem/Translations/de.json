@@ -9,7 +9,7 @@
     "event-startlocation": "Startort",
     "details": "Details",
     "booking-status": "Buchungsstatus",
-    "open": "Offen",
-    "closed" :  "Storniert"
+    "open": "offen",
+    "closed" :  "storniert"
   }
 }
