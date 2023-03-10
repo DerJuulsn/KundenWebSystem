@@ -109,9 +109,12 @@ else
     {
         if (value)
         {
-            await this.context.tbl_Buchungen.AddAsync(CreateBuchung());
-            await this.context.SaveChangesAsync();
-            Navigation.NavigateTo("/bookings");
+            if((this.eventDaten.FreeSpots - this.bookedSpotsCount) > 0)
+            {
+                await this.context.tbl_Buchungen.AddAsync(CreateBuchung());
+                await this.context.SaveChangesAsync();
+                Navigation.NavigateTo("/bookings");
+            }
             return;
         }
     }
