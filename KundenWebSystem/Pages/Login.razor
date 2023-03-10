@@ -57,7 +57,7 @@
         }
         
         //Check if the password is correct
-        if (!SiService.TryLogIn(password, email))
+        if (!SiService.TryLogIn(password, email).Result)
         {
             hiddenPassword = false;
             hiddenEmail = true;
