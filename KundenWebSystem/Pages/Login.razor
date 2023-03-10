@@ -37,7 +37,7 @@
     bool hiddenEmail = true;
     bool hiddenPassword = true;
 
-    void CheckLoginDetails()
+    async void CheckLoginDetails()
     {
         //Check if a possible Email was input
         if (!CheckEmailInput())
@@ -57,7 +57,7 @@
         }
         
         //Check if the password is correct
-        if (!SiService.TryLogIn(password, email))
+        if (!await SiService.TryLogIn(password, email))
         {
             hiddenPassword = false;
             hiddenEmail = true;
