@@ -16,6 +16,7 @@
                 <th scope="col">@languageService.Get("event-title")</th>
                 <th scope="col">@languageService.Get("event-starttime")</th>
                 <th scope="col">@languageService.Get("event-startlocation")</th>
+                <th scope="col">@languageService.Get("booking-status")</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -26,6 +27,15 @@
                     <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
                     <td>@buchung.ed_EvDaten.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
                     <td>@buchung.ed_EvDaten.ed_StartOrt</td>
+                    <td>@if(buchung.bu_Storniert)
+                        {
+                            @languageService.Get("closed")
+                        }
+                        else
+                        {
+                            @languageService.Get("open")
+                        }
+                    </td>
                     <td><a href="/bookings/cancel/@buchung.bu_BuchungsID">@languageService.Get("details")</a></td>
                 </tr>
             }
