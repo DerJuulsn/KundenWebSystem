@@ -19,7 +19,7 @@ namespace KundenWebSystem.Data.Eventseite
         {
             return await eventcontext.tbl_EventDaten
                 .Include(o => o.et_Event.ev_EvVeranstalter)
-                .Where(o => o.ed_Freigegeben && o.FreeSpots > 0) // alle freien Events und bei denen noch gebucht werden kann
+                .Where(o => o.ed_Freigegeben && o.FreeSpots > 0) // alle freien Events und Events bei denen noch gebucht werden kann
                 .Select(o => new EventsResult()
                 {
                     EventID = o.et_EventID,
