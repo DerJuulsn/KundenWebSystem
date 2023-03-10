@@ -1,69 +1,65 @@
 ﻿@page "/register"
+@using KundenWebSystem.Database.Model
 
 <h1>Registrierung</h1>
 
-<form method="post">
-    <div>
-        <label for="vorname">Vorname:</label>
-        <input type="text" id="vorname" name="Vorname" @bind-value="KdVorname" required/>
+<EditForm Model="@KundenModel" OnValidSubmit="Callback">
+    <div class="row">
+        <div class="col my-2">
+            <label class="form-label">Vorname</label>
+            <input class="form-control" id="firstname" @bind-value="KundenModel.kd_Vorname" required/>
+        </div>
+        <div class="col my-2">
+            <label class="form-label">Nachname</label>
+            <input class="form-control" id="lastname" @bind-value="KundenModel.kd_Name" required/>
+        </div>
     </div>
-    <div>
-        <label for="nachname">Nachname:</label>
-        <input type="text" id="nachname" name="Nachname" @bind-value="KdNachname" required />
+    <div class="row">
+        <div class="col my-2">
+            <label class="form-label">Straße</label>
+            <input class="form-control" id="street" @bind-value="KundenModel.kd_Strasse" required/>
+        </div>
+        <div class="col my-2">
+            <label class="form-label">Hausnummer</label>
+            <input class="form-control" id="hausnummer" @bind-value="KundenModel.kd_HNummer" required/>
+        </div>
     </div>
-    <div>
-        <label for="strasse">Straße:</label>
-        <input type="text" id="strasse" name="Strasse" @bind-value="KdStrasse" required />
+    <div class="row">
+        <div class="col my-2">
+            <label class="form-label">Stadt</label>
+            <input class="form-control" id="city" @bind-value="KundenModel.kd_Ort" required/>
+        </div>
+        <div class="col my-2">
+            <label class="form-label">PLZ</label>
+            <input class="form-control" id="postal_code" @bind-value="KundenModel.kd_PLZ" required/>
+        </div>
     </div>
-    <div>
-        <label for="hausnummer">Hausnummer:</label>
-        <input type="text" id="hausnummer" name="Hausnummer" @bind-value="KdHausnummer" required />
+    <div class="col my-2">
+        <label class="form-label">Email</label>
+        <input class="form-control" id="email" @bind-value="KundenModel.kd_EMail" required/>
     </div>
-    <div>
-        <label for="plz">Postleitzahl:</label>
-        <input type="text" id="plz" name="PLZ" @bind-value="KdPlz" required />
+    <div class="col my-2">
+        <label class="form-label">Passwort</label>
+        <input type="password" class="form-control" id="password" @bind-value="KundenModel.kd_PasswortHash" required/>
     </div>
-    <div>
-        <label for="stadt">Stadt:</label>
-        <input type="text" id="stadt" name="Stadt" @bind-value="KdStadt" required />
+    <div class="col my-2">
+        <label class="form-label">Passwort Wiederholen</label>
+        <input type="password" class="form-control" id="password-repeat" @bind-value="KundenModel.PasswortWiederholen" required/>
     </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="Email" @bind-value="KdEmail" required />
+    <div class="col mt-3">
+        <button type="submit" class="btn btn-primary">Registrieren</button>
     </div>
-    <div>
-        <label for="passwort">Passwort:</label>
-        <input type="password" id="Passwort" name="Passwort" @bind-value="KdPasswort" required />
-    </div>
-    <div>
-        <label for="passwortWiederholen">Passwort wiederholen:</label>
-        <input type="password" id="PasswortWiederholen" name="PasswortWiederholen" @bind-value="WdPasswort" required />
-    </div>
-    <button type="submit">Registrieren</button>
-</form>
+</EditForm>
 
 @code
 {
 
 
-    //public tbl_Kunden KundenModel { get; set; } = new();
+    public tbl_Kunden KundenModel { get; set; } = new();
 
     // [BindProperty]
     // public RegisterModel RegisterModel { get; set; }
 
-
-    String KdVorname;
-    String KdNachname;
-    String KdStrasse;
-    String KdHausnummer;
-    String KdPlz;
-    String KdStadt;
-    String KdTelefon;
-    String KdEmail;
-    String KdPasswort;
-    String WdPasswort;
-
-   
 
     /*
     public async Task<IActionResult> OnPostAsync()
@@ -108,4 +104,7 @@
     }
     */
 
+    private void Callback()
+    {
+    }
 }

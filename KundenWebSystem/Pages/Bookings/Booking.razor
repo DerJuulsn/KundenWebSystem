@@ -1,12 +1,15 @@
 ﻿@page "/bookings/new/{eventDataId:int?}"
 @using Data;
 @using KundenWebSystem.Database.Model;
-@using Services;
+@using Components;
 @inject BookingService bookingService;
+@inject KWSContext context;
 @inject LanguageService languageService;
+@inject NavigationManager Navigation
+
 <h1>Eventbuchung</h1>
 <hr />
-@if (this.eventDaten == null)
+@if (eventDaten == null)
 {
     <div class="container">
         <p>Loading...</p>
@@ -14,6 +17,10 @@
 }
 else
 {
+    <KundenWebSystem.Pages.Bookings.Components.Popup @ref="popup"
+                                                     Title="Event buchen"
+                                                     Content="Möchten Sie das Event wirklich buchen?"
+                                                     InteractionResult="@OnPopupInteraction" />
     <KundenWebSystem.Pages.Bookings.Components.EventData EventDataId="@EventDataId" />
     <div class="container-fluid" id="your-booking-container">
         <h3>@languageService.Get("your-bookings")</h3>
@@ -32,24 +39,31 @@ else
         </div>
         <div class="container-fluid">
             <div class="row">
-                <!-- ComboBox Teilnehmerplätze -->
-                <div class="col no-margin dropdown-plaetze">
-                    <label for="anzahl-plaetze-label">Anzahl Plätze</label>
-                    <select name="anzahl-plaetze-label" id="select-anzahl-plaetze">
-                        @for (int i = 1; i < this.eventDaten.FreeSpots + 1; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                </div>
+                @if (this.eventDaten.FreeSpots > 0)
+                {
+                    <!-- ComboBox Teilnehmerplätze -->
+                    <div class="col no-margin dropdown-plaetze">
+                        <label for="anzahl-plaetze-label">Anzahl Plätze</label>
+                        <select name="anzahl-plaetze-label" id="select-anzahl-plaetze" @bind="@bookedSpotsCount">
+                            @for (int i = 1; i < this.eventDaten.FreeSpots + 1; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
 
-                <!-- Platzhalter -->
-                <div class="col"></div>
+                    <!-- Platzhalter -->
+                    <div class="col"></div>
 
-                <!-- Button: "Buchen" -->
-                <div class="col">
-                    <button class="btn btn-success" @onclick="() => ClickBtnBuchen()">Event buchen</button>
-                </div>
+                    <!-- Button: "Buchen" -->
+                    <div class="col">
+                        <button class="btn btn-success" @onclick="() => ClickBtnBuchen()">Event buchen</button>
+                    </div>
+                }
+                else
+                {
+                    <label>Es sind keine freien Plätze mehr verfügbar</label>
+                }
             </div>
         </div>
     </div>
@@ -60,6 +74,9 @@ else
     public int EventDataId { get; set; }
 
     private tbl_EventDaten eventDaten;
+    private int bookedSpotsCount = 1;
+
+    private Popup popup;
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,5 +85,37 @@ else
 
     public void ClickBtnBuchen()
     {
+        popup.Open();
+    }
+
+    private tbl_Buchungen CreateBuchung()
+    {
+        const int userID = 1; //To-Do: get real user id
+
+        tbl_Buchungen buchung = new tbl_Buchungen();
+        buchung.bu_Bezahlt = false;
+        buchung.bu_GebuchtePlaetze = this.bookedSpotsCount;
+        buchung.bu_RechnungErstellt = false;
+        buchung.bu_Storniert = false;
+        buchung.ed_EvDatenID = this.eventDaten.ed_EvDatenID;
+        buchung.kd_KundenID = userID;
+
+        this.eventDaten.ed_AktTeilnehmer += this.bookedSpotsCount;
+
+        return buchung;
+    }
+
+    private async Task OnPopupInteraction(bool value)
+    {
+        if (value)
+        {
+            if((this.eventDaten.FreeSpots - this.bookedSpotsCount) > 0)
+            {
+                await this.context.tbl_Buchungen.AddAsync(CreateBuchung());
+                await this.context.SaveChangesAsync();
+                Navigation.NavigateTo("/bookings");
+            }
+            return;
+        }
     }
 }

@@ -1,8 +1,0 @@
-.page {
-    display: flex;
-    flex-direction: column;
-    background: #1a1e21;
-}
-.h-screen {
-    height: 100vh;
-}
