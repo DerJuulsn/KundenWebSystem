@@ -81,10 +81,6 @@
                 {
                     <div class="col"><button type="button" class="btn btn-danger" @onclick="DoCancelBooking">Buchung stornieren</button></div>
                 }
-                else
-                {
-
-                }
             }
         </div>
     </div>
@@ -129,7 +125,6 @@
             CurrentBookings.ed_EvDaten.ed_AktTeilnehmer -= CurrentBookings.bu_GebuchtePlaetze;
             await Context.SaveChangesAsync();
         }
-        else { }
     }
 
     public int? LoggedInUser { get; set; }

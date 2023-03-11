@@ -52,10 +52,6 @@
     {
         if (!firstRender)
         {
-            if(LoggedInUser != null)
-            {
-                userBookingList = await bookingService.GetBuchungenForUserAsync(LoggedInUser.Value);
-            }
             return;
         }
 
