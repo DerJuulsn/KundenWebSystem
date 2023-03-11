@@ -1,28 +1,42 @@
 ﻿@page "/bookings"
 @using Data;
 @using KundenWebSystem.Database.Model;
+@using KundenWebSystem.Services;
 @inject BookingService bookingService;
+@inject LanguageService languageService;
+@inject SignInService SignInService
+@inject NavigationManager Navigation
 
-<h3 style="font-weight: bold">Meine aktiven Buchungen</h3>
+<h3 style="font-weight: bold">@languageService.Get("my-active-bookings")</h3>
 <hr />
 <div class="container-fluid" id="booking-list">
     <table class="table table-striped">
         <thead class="thead-light">
             <tr>
-                <th scope="col">Eventbezeichnungen</th>
-                <th scope="col">Eventbeginn</th>
-                <th scope="col">Startort</th>
+                <th scope="col">@languageService.Get("event-title")</th>
+                <th scope="col">@languageService.Get("event-starttime")</th>
+                <th scope="col">@languageService.Get("event-startlocation")</th>
+                <th scope="col">@languageService.Get("booking-status")</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach(tbl_Buchungen buchung in this.userBookingList)
+            @foreach (tbl_Buchungen buchung in this.userBookingList)
             {
                 <tr>
                     <td>@buchung.ed_EvDaten.et_Event.et_Bezeichnung</td>
                     <td>@buchung.ed_EvDaten.ed_Beginn.ToString("dd.MM.yyyy HH:mm")</td>
                     <td>@buchung.ed_EvDaten.ed_StartOrt</td>
-                    <td><a href="/bookings/cancel/@buchung.bu_BuchungsID">Details</a></td>
+                    <td>@if(buchung.bu_Storniert)
+                        {
+                            @languageService.Get("closed")
+                        }
+                        else
+                        {
+                            @languageService.Get("open")
+                        }
+                    </td>
+                    <td><a href="/bookings/cancel/@buchung.bu_BuchungsID">@languageService.Get("details")</a></td>
                 </tr>
             }
         </tbody>
@@ -30,12 +44,26 @@
 </div>
 @code {
 
-    private static int USER_ID = 1;
-
     private List<tbl_Buchungen> userBookingList = new List<tbl_Buchungen>();
 
-    protected override async Task OnInitializedAsync()
+    public int? LoggedInUser { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        userBookingList = await bookingService.GetBuchungenForUserAsync(USER_ID);
+        if (!firstRender)
+        {
+            return;
+        }
+
+        LoggedInUser = await SignInService.GetLoggedInUser();
+
+        if (LoggedInUser == null)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        userBookingList = await bookingService.GetBuchungenForUserAsync(LoggedInUser.Value);
+        StateHasChanged();
     }
 }

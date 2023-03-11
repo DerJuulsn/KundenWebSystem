@@ -1,0 +1,15 @@
+{
+  "Name": "Deutsch",
+  "ShortName": "de",
+  "Translations": {
+    "your-bookings": "Ihre Buchungen",
+    "my-active-bookings": "Meine aktiven Buchungen",
+    "event-title": "Eventbezeichnung",
+    "event-starttime": "Beginn",
+    "event-startlocation": "Startort",
+    "details": "Details",
+    "booking-status": "Buchungsstatus",
+    "open": "offen",
+    "closed" :  "storniert"
+  }
+}

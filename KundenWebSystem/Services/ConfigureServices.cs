@@ -14,6 +14,7 @@ namespace KundenWebSystem.Services
             services.AddScoped<EventService>();
             services.AddScoped<HashTranslatorService>();
             services.AddScoped<BookingService>();
+            services.AddSingleton<LanguageService>();
         }
     }
 }
